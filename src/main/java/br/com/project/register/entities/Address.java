@@ -16,9 +16,6 @@ public class Address {
     private String cep;
     private String state;
 
-    @ManyToOne
-    private Costumer costumer;
-
     public Address(){
     }
 

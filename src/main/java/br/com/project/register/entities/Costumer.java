@@ -21,9 +21,6 @@ public class Costumer {
     @Enumerated(EnumType.STRING)
     private Types type;
 
-    @OneToMany(mappedBy = "costumer")
-    private List<Address> addresses = new ArrayList<>();
-
     public Costumer() {
     }
 
