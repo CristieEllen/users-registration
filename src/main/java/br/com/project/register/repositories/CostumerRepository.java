@@ -1,4 +1,4 @@
-package br.com.project.register.repository;
+package br.com.project.register.repositories;
 
 import br.com.project.register.entities.Costumer;
 import org.springframework.data.jpa.repository.JpaRepository;
