@@ -1,14 +1,14 @@
 package br.com.project.register.entities;
 
-import br.com.project.register.enums.Types;
+import br.com.project.register.enums.CustomerTypes;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_costumers")
-public class Costumer {
+@Table(name = "tb_customers")
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,18 +19,22 @@ public class Costumer {
     private String cellphone;
 
     @Enumerated(EnumType.STRING)
-    private Types type;
 
-    public Costumer() {
+    private CustomerTypes customerType;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Address> addresses;
+
+    public Customer() {
     }
 
-    public Costumer(Long id, String name, String cpf, String email, String cellphone, Types type) {
-        this.id = id;
+    public Customer(String name, String cpf, String email, String cellphone, CustomerTypes customerType) {
         this.name = name;
         this.cpf = cpf;
         this.email = email;
         this.cellphone = cellphone;
-        this.type = type;
+        this.customerType = customerType;
+        this.addresses = new ArrayList<>();
     }
 
     public Long getId() {
@@ -69,11 +73,15 @@ public class Costumer {
         this.cellphone = cellphone;
     }
 
-    public Types getType() {
-        return type;
+    public CustomerTypes getCustomerType() {
+        return customerType;
     }
 
-    public void setType(Types type) {
-        this.type = type;
+    public void setCustomerType(CustomerTypes customerType) {
+        this.customerType = customerType;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
     }
 }

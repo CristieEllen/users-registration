@@ -16,10 +16,13 @@ public class Address {
     private String cep;
     private String state;
 
+    @ManyToOne
+    private Customer customer;
+
     public Address(){
     }
 
-    public Address(Long id, String nameOfTheStreet, Integer numberOfTheHouse, String district, String city, String cep, String state) {
+    public Address(Long id, String name, Integer number, String district, String city, String cep, String state) {
         this.id = id;
         this.name = name;
         this.number= number;
@@ -37,7 +40,7 @@ public class Address {
         return name;
     }
 
-    public void setName(String nameOfTheStreet) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -45,7 +48,7 @@ public class Address {
         return number;
     }
 
-    public void setNumber(Integer numberOfTheHouse) {
+    public void setNumber(Integer number) {
         this.number= number;
     }
 
@@ -79,5 +82,13 @@ public class Address {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer costumer) {
+        this.customer = costumer;
     }
 }

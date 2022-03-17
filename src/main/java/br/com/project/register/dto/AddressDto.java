@@ -1,8 +1,10 @@
 package br.com.project.register.dto;
 
 import br.com.project.register.entities.Address;
+import br.com.project.register.entities.Customer;
 
 public class AddressDto {
+
     private Long id;
     private String name;
     private Integer number;
@@ -10,6 +12,8 @@ public class AddressDto {
     private String city;
     private String cep;
     private String state;
+
+    private Customer customer;
 
     public AddressDto(Address address) {
         this.id = address.getId();
@@ -19,6 +23,7 @@ public class AddressDto {
         this.city = address.getCity();
         this.cep = address.getCep();
         this.state = address.getState();
+        this.customer = address.getCustomer();
     }
 
     public Long getId() {
@@ -47,5 +52,9 @@ public class AddressDto {
 
     public String getState() {
         return state;
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 }
