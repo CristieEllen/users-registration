@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/customers")
 public class CustomerController {
@@ -28,8 +30,13 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerForm customerForm, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<CustomerDto> createCustomer(@RequestBody @Valid CustomerForm customerForm, UriComponentsBuilder uriBuilder){
         return service.createCustomer(customerForm, uriBuilder);
+    }
+
+    @DeleteMapping("/{id}")
+    public  ResponseEntity remove(@PathVariable Long id) {
+        return service.remove(id);
     }
 
 }

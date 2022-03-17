@@ -10,6 +10,7 @@ import br.com.project.register.entities.Customer;
 import br.com.project.register.repositories.CustomerRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -38,6 +39,11 @@ public class CustomerServiceImpl{
 
         URI uri = uriBuilder.path("/{id}").buildAndExpand(customer.getId()).toUri();
         return ResponseEntity.created(uri).body(new CustomerDto(customer));
+    }
+
+    public ResponseEntity remove(Long id){
+        repository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
 }

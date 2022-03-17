@@ -1,6 +1,7 @@
 package br.com.project.register.entities;
 
 import br.com.project.register.enums.CustomerTypes;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Customer {
     private CustomerTypes customerType;
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private List<Address> addresses;
 
     public Customer() {

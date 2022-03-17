@@ -1,5 +1,7 @@
 package br.com.project.register.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -17,6 +19,7 @@ public class Address {
     private String state;
 
     @ManyToOne
+    @JsonIgnore
     private Customer customer;
 
     public Address(){
