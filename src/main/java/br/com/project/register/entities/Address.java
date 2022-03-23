@@ -1,8 +1,10 @@
 package br.com.project.register.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import br.com.project.register.forms.AddressForm;
 
 import javax.persistence.*;
+
 
 @Entity
 @Table(name = "tb_addresses")
@@ -18,15 +20,10 @@ public class Address {
     private String cep;
     private String state;
 
-    @ManyToOne
-    @JsonIgnore
-    private Customer customer;
-
     public Address(){
     }
 
-    public Address(Long id, String name, Integer number, String district, String city, String cep, String state) {
-        this.id = id;
+    public Address(String name, Integer number, String district, String city, String cep, String state) {
         this.name = name;
         this.number= number;
         this.district = district;
@@ -34,6 +31,7 @@ public class Address {
         this.cep = cep;
         this.state = state;
     }
+
 
     public Long getId() {
         return id;
@@ -87,11 +85,17 @@ public class Address {
         this.state = state;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
 
-    public void setCustomer(Customer costumer) {
-        this.customer = costumer;
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", number=" + number +
+                ", district='" + district + '\'' +
+                ", city='" + city + '\'' +
+                ", cep='" + cep + '\'' +
+                ", state='" + state + '\'' +
+                '}';
     }
 }

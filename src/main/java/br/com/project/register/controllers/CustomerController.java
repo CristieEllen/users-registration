@@ -1,6 +1,7 @@
 package br.com.project.register.controllers;
 
 import br.com.project.register.dto.CustomerDto;
+import br.com.project.register.forms.AddressForm;
 import br.com.project.register.forms.CustomerForm;
 import br.com.project.register.services.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

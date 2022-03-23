@@ -13,8 +13,6 @@ public class AddressDto {
     private String cep;
     private String state;
 
-    private Customer customer;
-
     public AddressDto(Address address) {
         this.id = address.getId();
         this.name = address.getName();
@@ -23,7 +21,6 @@ public class AddressDto {
         this.city = address.getCity();
         this.cep = address.getCep();
         this.state = address.getState();
-        this.customer = address.getCustomer();
     }
 
     public Long getId() {
@@ -54,7 +51,4 @@ public class AddressDto {
         return state;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
 }

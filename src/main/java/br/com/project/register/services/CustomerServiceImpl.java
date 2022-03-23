@@ -10,8 +10,6 @@ import br.com.project.register.entities.Customer;
 import br.com.project.register.repositories.CustomerRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -20,21 +18,25 @@ import java.net.URI;
 public class CustomerServiceImpl{
 
     @Autowired
-    private CustomerRepository repository;
+    private CustomerRepository customerRepository;
 
     public Page<CustomerDto> findAllCustomer(Pageable pageable) {
-        Page<Customer> resultCustomer = repository.findAll(pageable);
+        Page<Customer> resultCustomer = customerRepository.findAll(pageable);
         Page<CustomerDto> customerDto = resultCustomer.map(x -> new CustomerDto(x));
         return customerDto;
     }
 
     public CustomerDto findByIdCustomer(Long id) {
-        Customer resultCustomer = repository.findById(id).get();
+        Customer resultCustomer = customerRepository.findById(id).get();
         return new CustomerDto(resultCustomer);
     }
 
     public ResponseEntity<CustomerDto> createCustomer(CustomerForm customerForm, UriComponentsBuilder uriBuilder) {
-        Customer customer = repository.save(customerForm.converter());
+        System.out.print(customerForm.getAddressFormList());
+
+        Customer customer = customerRepository.save(customerForm.converter());
+
+        System.out.print(customer);
 
 
         URI uri = uriBuilder.path("/{id}").buildAndExpand(customer.getId()).toUri();
@@ -42,7 +44,7 @@ public class CustomerServiceImpl{
     }
 
     public ResponseEntity remove(Long id){
-        repository.deleteById(id);
+        customerRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
