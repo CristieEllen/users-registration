@@ -26,7 +26,7 @@ public class CustomerDto {
         this.email = costumer.getEmail();
         this.cellphone = costumer.getCellphone();
         this.type = costumer.getCustomerType();
-        this.addresses = new ArrayList<>();
+        this.addresses = new ArrayList<>(5);
         this.addresses.addAll(costumer.getAddresses().stream().map(AddressDto::new).collect(Collectors.toList()));
     }
 

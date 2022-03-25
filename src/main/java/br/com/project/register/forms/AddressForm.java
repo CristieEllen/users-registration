@@ -2,24 +2,29 @@ package br.com.project.register.forms;
 
 import br.com.project.register.entities.Address;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 public class AddressForm {
 
+    @NotNull
+    @NotEmpty(message = "Preenchimento obrigatório!")
     private String name;
 
-
+    @NotNull
     private Integer number;
 
-
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!")
     private String district;
 
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!")
     private String city;
 
-
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!")
     private String cep;
 
-
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!")
     private String state;
 
 

@@ -27,7 +27,7 @@ public class Customer {
     private CustomerTypes customerType;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Address> addresses;
+    private List<Address> addresses = new ArrayList<>(5);
 
     public Customer() {
     }
@@ -88,10 +88,6 @@ public class Customer {
 
     public List<Address> getAddresses() {
         return addresses;
-    }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
     }
 
     @Override

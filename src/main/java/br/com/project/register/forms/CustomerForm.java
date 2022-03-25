@@ -1,22 +1,22 @@
 package br.com.project.register.forms;
 
-import br.com.project.register.dto.CustomerDto;
 import br.com.project.register.entities.Address;
 import br.com.project.register.entities.Customer;
 import br.com.project.register.enums.CustomerTypes;
+import org.hibernate.validator.constraints.Length;
 
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CustomerForm {
 
-    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Size(min = 10, max = 100)
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Size(min = 10, max = 100, message = "Min: 10, Max: 100")
     private String name;
 
     @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Size(min= 11, max = 14)
@@ -31,7 +31,8 @@ public class CustomerForm {
     @NotNull
     private CustomerTypes customerType;
 
-    private List<AddressForm> addressFormList = new ArrayList<>();
+    @Valid @NotNull @Size(min=1, max=5, message = "Adicione pelo menos 1 e no máximo 5 endereços@")
+    private List<AddressForm> addressFormList = new ArrayList<>(5);
 
 
     public String getName() {
@@ -78,16 +79,12 @@ public class CustomerForm {
         return addressFormList;
     }
 
-    public void setAddressFormList(List<AddressForm> addressFormList) {
-        this.addressFormList = addressFormList;
-    }
-
-
     public Customer converter() {
         List<Address> addresses = new ArrayList<>();
 
-        for( AddressForm addForm: addressFormList) {
+        for(AddressForm addForm: addressFormList) {
             addresses.add(addForm.converterAddress());
+
         }
         return new Customer(name, cpf, email, cellphone, customerType, addresses);
     }
