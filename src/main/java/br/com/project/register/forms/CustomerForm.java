@@ -16,22 +16,22 @@ import java.util.List;
 
 public class CustomerForm {
 
-    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Size(min = 10, max = 100, message = "Min: 10, Max: 100")
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 10, max = 100, message = "Min: 10, Max: 100")
     private String name;
 
-    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Size(min= 11, max = 14)
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min= 11, max = 14)
     private String cpf;
 
     @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Email(message = "Email inválido!")
     private String email;
 
-    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Size(min = 11)
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 11, max= 11, message = "Digite apenas o número do DDD e do telefone sem pontuação.")
     private String cellphone;
 
-    @NotNull
+    @NotNull(message = "Preenchimento obrigatório, o campo não pode ser nulo!")
     private CustomerTypes customerType;
 
-    @Valid @NotNull @Size(min=1, max=5, message = "Adicione pelo menos 1 e no máximo 5 endereços@")
+    @Valid @NotNull @Size(min=1, max=5, message = "Adicione pelo menos 1 e no máximo 5 endereços.")
     private List<AddressForm> addressFormList = new ArrayList<>(5);
 
 

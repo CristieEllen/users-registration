@@ -5,16 +5,14 @@ import br.com.project.register.entities.Customer;
 
 public class AddressDto {
 
-    private Long id;
     private String name;
-    private Integer number;
+    private String number;
     private String district;
     private String city;
     private String cep;
     private String state;
 
     public AddressDto(Address address) {
-        this.id = address.getId();
         this.name = address.getName();
         this.number = address.getNumber();
         this.district = address.getDistrict();
@@ -23,15 +21,11 @@ public class AddressDto {
         this.state = address.getState();
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 

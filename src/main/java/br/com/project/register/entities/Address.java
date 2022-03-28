@@ -5,7 +5,6 @@ import br.com.project.register.forms.AddressForm;
 
 import javax.persistence.*;
 
-
 @Entity
 @Table(name = "tb_addresses")
 public class Address {
@@ -14,7 +13,7 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Integer number;
+    private String number;
     private String district;
     private String city;
     private String cep;
@@ -23,7 +22,7 @@ public class Address {
     public Address(){
     }
 
-    public Address(String name, Integer number, String district, String city, String cep, String state) {
+    public Address(String name, String number, String district, String city, String cep, String state) {
         this.name = name;
         this.number= number;
         this.district = district;
@@ -45,11 +44,11 @@ public class Address {
         this.name = name;
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number= number;
     }
 
@@ -89,7 +88,6 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", number=" + number +
                 ", district='" + district + '\'' +
