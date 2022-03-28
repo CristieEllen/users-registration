@@ -1,17 +1,19 @@
 package br.com.project.register.controllers;
 
-import br.com.project.register.dto.CustomerDto;
-import br.com.project.register.forms.AddressForm;
-import br.com.project.register.forms.CustomerForm;
-import br.com.project.register.services.CustomerServiceImpl;
+import br.com.project.register.forms.UpdateCustomerForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.project.register.dto.CustomerDto;
+import br.com.project.register.forms.CustomerForm;
+import br.com.project.register.services.CustomerServiceImpl;
+
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @RestController
@@ -39,6 +41,12 @@ public class CustomerController {
     @DeleteMapping("/{id}")
     public  ResponseEntity remove(@PathVariable Long id) {
         return service.remove(id);
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable Long id, @RequestBody @Valid UpdateCustomerForm updateCustomerForm){
+        return service.updateCustomer(id, updateCustomerForm);
     }
 
 }

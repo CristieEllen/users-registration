@@ -2,6 +2,7 @@ package br.com.project.register.services;
 
 import br.com.project.register.exceptions.ObjectNotFoundException;
 import br.com.project.register.forms.CustomerForm;
+import br.com.project.register.forms.UpdateCustomerForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.util.Optional;
 
@@ -50,6 +52,16 @@ public class CustomerServiceImpl{
         } catch(EmptyResultDataAccessException e){
             throw new ObjectNotFoundException("Object not deleted because not found. Id: " + id);
         }
+    }
+
+    public ResponseEntity<CustomerDto> updateCustomer(Long id, UpdateCustomerForm updateCustomerForm){
+        try{
+            Customer customer = updateCustomerForm.update(id, customerRepository);
+            return ResponseEntity.ok(new CustomerDto(customer));
+        } catch(EntityNotFoundException e){
+            throw new ObjectNotFoundException("Object not updated. Non-existent customer id. Id: " + id);
+        }
+
     }
 
 }
