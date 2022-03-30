@@ -1,8 +1,5 @@
 package br.com.project.register.entities;
 
-
-import br.com.project.register.forms.AddressForm;
-
 import javax.persistence.*;
 
 @Entity
@@ -19,18 +16,20 @@ public class Address {
     private String cep;
     private String state;
 
+    private Boolean principalAddress;
+
     public Address(){
     }
 
-    public Address(String name, String number, String district, String city, String cep, String state) {
+    public Address(String name, String number, String district, String city, String cep, String state, Boolean principalAddress) {
         this.name = name;
-        this.number= number;
+        this.number = number;
         this.district = district;
         this.city = city;
         this.cep = cep;
         this.state = state;
+        this.principalAddress = principalAddress;
     }
-
 
     public Long getId() {
         return id;
@@ -84,16 +83,25 @@ public class Address {
         this.state = state;
     }
 
+    public Boolean getPrincipalAddress() {
+        return principalAddress;
+    }
+
+    public void setPrincipalAddress(Boolean principalAddress) {
+        this.principalAddress = principalAddress;
+    }
 
     @Override
     public String toString() {
         return "Address{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
-                ", number=" + number +
+                ", number='" + number + '\'' +
                 ", district='" + district + '\'' +
                 ", city='" + city + '\'' +
                 ", cep='" + cep + '\'' +
                 ", state='" + state + '\'' +
+                ", principalAddress=" + principalAddress +
                 '}';
     }
 }

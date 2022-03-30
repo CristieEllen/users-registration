@@ -1,15 +1,12 @@
-package br.com.project.register.forms;
+package br.com.project.register.dto.request;
 
 import br.com.project.register.entities.Customer;
 import br.com.project.register.repositories.CustomerRepository;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
-public class UpdateCustomerForm {
+public class UpdateCustomerDto {
 
     @Length(min = 10, max = 100, message = "Min: 10, Max: 100")
     private String name;

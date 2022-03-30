@@ -1,24 +1,31 @@
-package br.com.project.register.dto;
+package br.com.project.register.dto.response;
 
 import br.com.project.register.entities.Address;
-import br.com.project.register.entities.Customer;
 
 public class AddressDto {
 
+    private Long id;
     private String name;
     private String number;
     private String district;
     private String city;
     private String cep;
     private String state;
+    private Boolean principalAddress;
 
     public AddressDto(Address address) {
+        this.id = address.getId();
         this.name = address.getName();
         this.number = address.getNumber();
         this.district = address.getDistrict();
         this.city = address.getCity();
         this.cep = address.getCep();
         this.state = address.getState();
+        this.principalAddress = address.getPrincipalAddress();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -45,4 +52,7 @@ public class AddressDto {
         return state;
     }
 
+    public Boolean getPrincipalAddress() {
+        return principalAddress;
+    }
 }

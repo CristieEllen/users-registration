@@ -1,9 +1,9 @@
-package br.com.project.register.services.exceptions;
+package br.com.project.register.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidationError extends StandardError{
+public class ValidationError extends StandardError {
 
     private List<FieldMessage> errors = new ArrayList<>();
 

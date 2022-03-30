@@ -1,14 +1,10 @@
 package br.com.project.register.entities;
 
-import br.com.project.register.dto.AddressDto;
 import br.com.project.register.enums.CustomerTypes;
-import br.com.project.register.forms.CustomerForm;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_customers")
@@ -18,7 +14,7 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String cpf;
+    private String documentNumber;
     private String email;
     private String cellphone;
 
@@ -27,14 +23,14 @@ public class Customer {
     private CustomerTypes customerType;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Address> addresses = new ArrayList<>(5);
+    private List<Address> addresses = new ArrayList<>();
 
     public Customer() {
     }
 
-    public Customer(String name, String cpf, String email, String cellphone, CustomerTypes customerType, List<Address> addresses) {
+    public Customer(String name, String documentNumber, String email, String cellphone, CustomerTypes customerType, List<Address> addresses) {
         this.name = name;
-        this.cpf = cpf;
+        this.documentNumber = documentNumber;
         this.email = email;
         this.cellphone = cellphone;
         this.customerType = customerType;
@@ -54,12 +50,12 @@ public class Customer {
         this.name = name;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getDocumentNumber() {
+        return documentNumber;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setDocumentNumber(String documentNumber) {
+        this.documentNumber = documentNumber;
     }
 
     public String getEmail() {
@@ -95,11 +91,12 @@ public class Customer {
         return "Customer{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", cpf='" + cpf + '\'' +
+                ", documentNumber='" + documentNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", cellphone='" + cellphone + '\'' +
                 ", customerType=" + customerType +
                 ", addresses=" + addresses +
                 '}';
     }
+
 }

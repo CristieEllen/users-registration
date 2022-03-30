@@ -1,6 +1,5 @@
-package br.com.project.register.services.exceptions;
+package br.com.project.register.exceptions;
 
-import br.com.project.register.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

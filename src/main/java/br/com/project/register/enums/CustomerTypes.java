@@ -1,8 +1,8 @@
 package br.com.project.register.enums;
 
 public enum CustomerTypes {
-    PF("PF"),
-    PJ("PJ");
+    PF("Pessoa Fisica"),
+    PJ("Pessoa Juridica");
 
     private final String customerType;
 

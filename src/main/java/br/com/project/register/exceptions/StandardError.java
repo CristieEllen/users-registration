@@ -1,4 +1,4 @@
-package br.com.project.register.services.exceptions;
+package br.com.project.register.exceptions;
 
 public class StandardError {
 

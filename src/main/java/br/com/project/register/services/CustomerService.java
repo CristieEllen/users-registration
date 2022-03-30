@@ -1,20 +1,21 @@
 package br.com.project.register.services;
 
-import br.com.project.register.forms.CustomerForm;
+import br.com.project.register.dto.request.CustomerRequestDto;
+import br.com.project.register.dto.request.UpdateCustomerDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
-import br.com.project.register.dto.CustomerDto;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@Service
 public interface CustomerService {
 
-    public Page<CustomerDto> findAllCustomer(Pageable pageable);
+    Page<br.com.project.register.dto.response.CustomerDto> findAllCustomer(Pageable pageable);
 
-    public CustomerDto findByIdCustomer(Long id);
+    br.com.project.register.dto.response.CustomerDto findByIdCustomer(Long id);
 
-    public ResponseEntity<CustomerDto> createCustomer(CustomerForm customerForm);
+    ResponseEntity<br.com.project.register.dto.response.CustomerDto> createCustomer(CustomerRequestDto customerForm, UriComponentsBuilder uriBuilder);
+
+    ResponseEntity removeCustomer(Long id);
+
+    ResponseEntity<br.com.project.register.dto.response.CustomerDto> updateCustomer(Long id, UpdateCustomerDto updateCustomerForm);
 }
