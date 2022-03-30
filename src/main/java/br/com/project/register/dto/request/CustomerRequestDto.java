@@ -63,9 +63,18 @@ public class CustomerRequestDto {
 
         for(AddressRequestDto addForm: addresses) {
             address.add(addForm.converterAddress());
-
         }
         return new Customer(name, documentNumber, email, cellphone, customerType, address);
+    }
+
+    public Boolean validationAddress(){
+        int sum = 0;
+        for (AddressRequestDto add : addresses){
+            if(add.getPrincipalAddress()){
+                 sum++;
+            }
+        }
+        return sum >= 2;
     }
 
     @Override

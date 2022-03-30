@@ -1,5 +1,7 @@
 package br.com.project.register.entities;
 
+import br.com.project.register.dto.request.AddressRequestDto;
+
 import javax.persistence.*;
 
 @Entity
@@ -30,6 +32,7 @@ public class Address {
         this.state = state;
         this.principalAddress = principalAddress;
     }
+
 
     public Long getId() {
         return id;
