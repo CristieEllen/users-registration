@@ -1,15 +1,13 @@
 package br.com.project.register.dto.request;
 
+import br.com.project.register.annotations.CPForCNPJ;
 import br.com.project.register.entities.Address;
 import br.com.project.register.entities.Customer;
 import br.com.project.register.enums.CustomerTypes;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +16,9 @@ public class CustomerRequestDto {
     @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 10, max = 100, message = "Min: 10, Max: 100")
     private String name;
 
-    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min= 11, max = 14, message = "Digite com a pontuação")
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!")
+    @Pattern(regexp = "^(((\\d{3}).(\\d{3}).(\\d{3})-(\\d{2}))?((\\d{2}).(\\d{3}).(\\d{3})/(\\d{4})-(\\d{2}))?)*$", message = "CPF: 000.000.000-00 / CNPJ: 00.000.000/0000-00")
+    @CPForCNPJ
     private String documentNumber;
 
     @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Email(message = "Email inválido!")
@@ -67,15 +67,6 @@ public class CustomerRequestDto {
         return new Customer(name, documentNumber, email, cellphone, customerType, address);
     }
 
-    public Boolean validationAddress(){
-        int sum = 0;
-        for (AddressRequestDto add : addresses){
-            if(add.getPrincipalAddress()){
-                 sum++;
-            }
-        }
-        return sum >= 2;
-    }
 
     @Override
     public String toString() {

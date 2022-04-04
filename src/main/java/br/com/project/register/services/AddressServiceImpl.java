@@ -4,7 +4,7 @@ import br.com.project.register.dto.response.AddressDto;
 
 import br.com.project.register.entities.Address;
 
-import br.com.project.register.exceptions.ObjectNotFoundException;
+import br.com.project.register.exceptions.CompiledException;
 
 import br.com.project.register.dto.request.UpdateAddressDto;
 import br.com.project.register.repositories.AddressRepository;
@@ -26,7 +26,7 @@ public class AddressServiceImpl implements AddressService{
             addressRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch(EmptyResultDataAccessException e){
-            throw new ObjectNotFoundException("Object not deleted because not found. Id: " + id);
+            throw new CompiledException("Object not deleted because not found. Id: " + id);
         }
     }
 
@@ -35,7 +35,7 @@ public class AddressServiceImpl implements AddressService{
             Address address = updateAddressForm.update(id, addressRepository);
             return ResponseEntity.ok(new AddressDto(address));
         } catch(EntityNotFoundException e){
-            throw new ObjectNotFoundException("Object not updated. Non-existent customer id. Id: " + id);
+            throw new CompiledException("Object not updated. Non-existent customer id. Id: " + id);
         }
 
     }

@@ -1,10 +1,8 @@
 package br.com.project.register.controllers;
 
 import br.com.project.register.dto.request.CustomerRequestDto;
-import br.com.project.register.dto.request.UpdateCustomerDto;
 import br.com.project.register.dto.response.CustomerDto;
 import br.com.project.register.services.CustomerService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/customers")
@@ -42,11 +41,8 @@ public class CustomerController {
         return service.removeCustomer(id);
     }
 
-    @PutMapping("/{id}")
-    @Transactional
-    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable Long id, @RequestBody @Valid UpdateCustomerDto updateCustomerForm){
-        return service.updateCustomer(id, updateCustomerForm);
+    @PatchMapping("/{id}")
+    ResponseEntity<CustomerDto> savePartial(@PathVariable Long id,@RequestBody Map<String, Object> fields){
+        return service.savePartial(id, fields);
     }
-
-
 }

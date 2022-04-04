@@ -13,6 +13,7 @@ public class CustomerDto {
     private Long id;
     private String name;
     private String email;
+    private String documentNumber;
     private String cellphone;
     private CustomerTypes type;
 
@@ -23,6 +24,7 @@ public class CustomerDto {
         this.id = costumer.getId();
         this.name = costumer.getName();
         this.email = costumer.getEmail();
+        this.documentNumber = costumer.getDocumentNumber();
         this.cellphone = costumer.getCellphone();
         this.type = costumer.getCustomerType();
         this.addresses = new ArrayList<>();
@@ -40,6 +42,8 @@ public class CustomerDto {
     public String getEmail() {
         return email;
     }
+
+    public String getDocumentNumber(){ return documentNumber;}
 
     public String getCellphone() {
         return cellphone;

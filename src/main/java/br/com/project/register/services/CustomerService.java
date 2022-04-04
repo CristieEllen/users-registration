@@ -1,21 +1,24 @@
 package br.com.project.register.services;
 
 import br.com.project.register.dto.request.CustomerRequestDto;
-import br.com.project.register.dto.request.UpdateCustomerDto;
+import br.com.project.register.dto.response.CustomerDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Map;
+
 public interface CustomerService {
 
-    Page<br.com.project.register.dto.response.CustomerDto> findAllCustomer(Pageable pageable);
+    Page<CustomerDto> findAllCustomer(Pageable pageable);
 
-    br.com.project.register.dto.response.CustomerDto findByIdCustomer(Long id);
+   CustomerDto findByIdCustomer(Long id);
 
-    ResponseEntity<br.com.project.register.dto.response.CustomerDto> createCustomer(CustomerRequestDto customerForm, UriComponentsBuilder uriBuilder);
+    ResponseEntity<CustomerDto> createCustomer(CustomerRequestDto customerForm, UriComponentsBuilder uriBuilder);
 
     ResponseEntity removeCustomer(Long id);
 
-    ResponseEntity<br.com.project.register.dto.response.CustomerDto> updateCustomer(Long id, UpdateCustomerDto updateCustomerForm);
+
+    ResponseEntity<CustomerDto> savePartial(Long id, Map<String, Object> fields);
 }
