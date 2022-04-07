@@ -18,7 +18,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = {})
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CPForCNPJ {
+public @interface Document {
 
     String message() default "it's not a valid CPF or CPF";
 

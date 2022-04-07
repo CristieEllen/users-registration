@@ -1,8 +1,10 @@
 package br.com.project.register.entities;
 
-import br.com.project.register.dto.request.AddressRequestDto;
+import br.com.project.register.dto.request.CustomerRequestDtoPost;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_addresses")
@@ -20,10 +22,15 @@ public class Address {
 
     private Boolean principalAddress;
 
+    @ManyToOne
+    @JoinColumn(name = "costumer_id") @NotNull
+    private Customer customer;
+
     public Address(){
     }
 
     public Address(String name, String number, String district, String city, String cep, String state, Boolean principalAddress) {
+
         this.name = name;
         this.number = number;
         this.district = district;
@@ -31,8 +38,8 @@ public class Address {
         this.cep = cep;
         this.state = state;
         this.principalAddress = principalAddress;
-    }
 
+    }
 
     public Long getId() {
         return id;
@@ -90,8 +97,17 @@ public class Address {
         return principalAddress;
     }
 
-    public void setPrincipalAddress(Boolean principalAddress) {
-        this.principalAddress = principalAddress;
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    @PreRemove
+    public void removeCustomer(){
+        customer.removeAddress(id);
     }
 
     @Override
@@ -105,6 +121,7 @@ public class Address {
                 ", cep='" + cep + '\'' +
                 ", state='" + state + '\'' +
                 ", principalAddress=" + principalAddress +
+                ", customer=" + customer +
                 '}';
     }
 }

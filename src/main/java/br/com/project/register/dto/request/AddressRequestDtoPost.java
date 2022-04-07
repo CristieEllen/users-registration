@@ -1,6 +1,7 @@
 package br.com.project.register.dto.request;
 
 import br.com.project.register.entities.Address;
+import br.com.project.register.entities.Customer;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
@@ -8,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 
-public class AddressRequestDto {
+public class AddressRequestDtoPost {
 
     @NotNull
     @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 5,max = 80, message = "Mín 5, Max: 80 caracteres.")
@@ -31,6 +32,9 @@ public class AddressRequestDto {
 
     @NotNull(message = "Preenchimento obrigatório!")
     private Boolean principalAddress;
+
+    private CustomerRequestDtoPost customerRequestDtoPost;
+
 
     public String getName() {
         return name;
@@ -60,14 +64,10 @@ public class AddressRequestDto {
         return principalAddress;
     }
 
-    public Address converterAddress() {
-        return new Address(name, number, district, city, cep, state, principalAddress);
-    }
-
 
     @Override
     public String toString() {
-        return "AddressRequestDto{" +
+        return "AddressRequestDtoPost{" +
                 "name='" + name + '\'' +
                 ", number='" + number + '\'' +
                 ", district='" + district + '\'' +
@@ -76,5 +76,9 @@ public class AddressRequestDto {
                 ", state='" + state + '\'' +
                 ", principalAddress=" + principalAddress +
                 '}';
+    }
+
+    public Address converterAddress() {
+        return new Address(name, number, district, city, cep, state, principalAddress);
     }
 }

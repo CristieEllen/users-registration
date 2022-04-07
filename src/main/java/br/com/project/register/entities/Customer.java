@@ -1,6 +1,7 @@
 package br.com.project.register.entities;
 
 import br.com.project.register.enums.CustomerTypes;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Customer {
 
     private CustomerTypes customerType;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer")
     private List<Address> addresses = new ArrayList<>();
 
     public Customer() {
@@ -84,6 +85,10 @@ public class Customer {
 
     public List<Address> getAddresses() {
         return addresses;
+    }
+
+    public void removeAddress(Long idAddress){
+        addresses.remove(idAddress);
     }
 
     @Override

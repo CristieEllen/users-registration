@@ -28,7 +28,7 @@ public class CustomerDto {
         this.cellphone = costumer.getCellphone();
         this.type = costumer.getCustomerType();
         this.addresses = new ArrayList<>();
-        this.addresses.addAll(costumer.getAddresses().stream().filter(Address::getPrincipalAddress).map(AddressDto::new).collect(Collectors.toList()));
+        this.addresses.addAll(costumer.getAddresses().stream().map(AddressDto::new).collect(Collectors.toList()));
     }
 
     public Long getId() {
