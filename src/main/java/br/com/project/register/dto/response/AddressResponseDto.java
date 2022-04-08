@@ -2,7 +2,7 @@ package br.com.project.register.dto.response;
 
 import br.com.project.register.entities.Address;
 
-public class AddressDto {
+public class AddressResponseDto {
 
     private Long id;
     private String name;
@@ -13,7 +13,7 @@ public class AddressDto {
     private String state;
     private Boolean principalAddress;
 
-    public AddressDto(Address address) {
+    public AddressResponseDto(Address address) {
         this.id = address.getId();
         this.name = address.getName();
         this.number = address.getNumber();
