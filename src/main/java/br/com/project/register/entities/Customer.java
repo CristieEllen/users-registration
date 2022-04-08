@@ -1,7 +1,6 @@
 package br.com.project.register.entities;
 
 import br.com.project.register.enums.CustomerTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,19 +22,18 @@ public class Customer {
 
     private CustomerTypes customerType;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private List<Address> addresses = new ArrayList<>();
 
     public Customer() {
     }
 
-    public Customer(String name, String documentNumber, String email, String cellphone, CustomerTypes customerType, List<Address> addresses) {
+    public Customer(String name, String documentNumber, String email, String cellphone, CustomerTypes customerType) {
         this.name = name;
         this.documentNumber = documentNumber;
         this.email = email;
         this.cellphone = cellphone;
         this.customerType = customerType;
-        this.addresses = addresses;
 
     }
 
@@ -87,9 +85,14 @@ public class Customer {
         return addresses;
     }
 
-    public void removeAddress(Long idAddress){
-        addresses.remove(idAddress);
+    /*public void addAddress(Address address){
+        addresses.add(address);
+    }*/
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
+
 
     @Override
     public String toString() {

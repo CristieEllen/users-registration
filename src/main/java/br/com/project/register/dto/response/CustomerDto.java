@@ -1,6 +1,5 @@
 package br.com.project.register.dto.response;
 
-import br.com.project.register.entities.Address;
 import br.com.project.register.entities.Customer;
 import br.com.project.register.enums.CustomerTypes;
 

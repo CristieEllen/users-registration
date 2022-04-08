@@ -1,7 +1,6 @@
 package br.com.project.register.dto.request;
 
 import br.com.project.register.entities.Address;
-import br.com.project.register.entities.Customer;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 

@@ -58,13 +58,22 @@ public class CustomerRequestDtoPost {
         return addresses;
     }
 
-    public Customer converter() {
-        List<Address> address = new ArrayList<>();
+    public Customer converterCustomer(){
+        Customer customer = new Customer(name, documentNumber, email, cellphone, customerType);
+        List<Address> address = converterAddress(customer);
+        customer.setAddresses(address);
+        return customer;
+    }
+
+    public List<Address> converterAddress(Customer customer) {
+        List<Address> addressList = new ArrayList<>();
 
         for(AddressRequestDtoPost addForm: addresses) {
-            address.add(addForm.converterAddress());
+            Address address = addForm.converterAddress();
+            address.setCustomer(customer);
+            addressList.add(address);
         }
-        return new Customer(name, documentNumber, email, cellphone, customerType, address);
+        return addressList;
     }
 
     @Override

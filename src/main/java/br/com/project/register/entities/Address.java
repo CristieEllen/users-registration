@@ -1,10 +1,6 @@
 package br.com.project.register.entities;
 
-import br.com.project.register.dto.request.CustomerRequestDtoPost;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_addresses")
@@ -23,7 +19,7 @@ public class Address {
     private Boolean principalAddress;
 
     @ManyToOne
-    @JoinColumn(name = "costumer_id") @NotNull
+    @JoinColumn(name = "costumer_id")
     private Customer customer;
 
     public Address(){
@@ -121,7 +117,6 @@ public class Address {
                 ", cep='" + cep + '\'' +
                 ", state='" + state + '\'' +
                 ", principalAddress=" + principalAddress +
-                ", customer=" + customer +
                 '}';
     }
 }

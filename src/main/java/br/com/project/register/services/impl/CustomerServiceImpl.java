@@ -1,4 +1,4 @@
-package br.com.project.register.services;
+package br.com.project.register.services.impl;
 
 import br.com.project.register.dto.request.AddressRequestDtoPost;
 import br.com.project.register.dto.request.CustomerRequestDtoPatch;
@@ -9,17 +9,18 @@ import br.com.project.register.exceptions.ChooseMoreThanAllowedException;
 import br.com.project.register.exceptions.CompiledException;
 import br.com.project.register.repositories.AddressRepository;
 import br.com.project.register.repositories.CustomerRepository;
+import br.com.project.register.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -38,27 +39,28 @@ public class CustomerServiceImpl implements CustomerService{
         return resultCustomer.orElseThrow(() -> new CompiledException("Element of id " + idCustomer + " does not exist"));
     }
 
+    @Transactional
     @Override
-    public Customer createCustomer(CustomerRequestDtoPost customerRequestDtoPost) {
-        validationPrincipalAddress(customerRequestDtoPost);
-
-        //Customer customer = customerRepository.save(customerRequestDtoPost);
-        return customerRepository.save(customerRequestDtoPost.converter());
+    public Customer createCustomer(CustomerRequestDtoPost customerRequest) {
+        validationPrincipalAddress(customerRequest);
+        return customerRepository.save(customerRequest.converterCustomer());
     }
-    
 
+    @Transactional
     public void removeCustomer(Long idCustomer){
         findBy(idCustomer);
         customerRepository.deleteById(idCustomer);
     }
 
+    @Transactional
     @Override
-    public Customer updateCustomer(Long id, CustomerRequestDtoPatch customerRequestDtoPatch){
+    public Customer updateCustomer(Long id, CustomerRequestDtoPatch customerRequest){
         Customer customer = findBy(id);
-        updateCustomer(customer, customerRequestDtoPatch);
+        updateCustomer(customer, customerRequest);
         return customerRepository.save(customer);
     }
 
+    @Transactional
     @Override
     public void removeAddress(Long idCustomer, Long idAddress){
         validationAddress(idCustomer, idAddress);
@@ -66,9 +68,9 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
 
-    private void validationPrincipalAddress(CustomerRequestDtoPost customerRequestDtoPost){
+    private void validationPrincipalAddress(CustomerRequestDtoPost customerRequest){
         int sum = 0;
-        for (AddressRequestDtoPost add : customerRequestDtoPost.getAddresses()){
+        for (AddressRequestDtoPost add : customerRequest.getAddresses()){
             if(add.getPrincipalAddress()){
                 sum++;
             }
@@ -99,10 +101,10 @@ public class CustomerServiceImpl implements CustomerService{
         }
     }*/
 
-    private void updateCustomer(Customer customer, CustomerRequestDtoPatch customerRequestDtoPatch) {
-        customer.setName((customerRequestDtoPatch.getName()==null) ? customer.getName() : customerRequestDtoPatch.getName());
-        customer.setEmail((customerRequestDtoPatch.getEmail()==null) ? customer.getEmail() : customerRequestDtoPatch.getEmail());
-        customer.setCellphone((customerRequestDtoPatch.getCellphone()==null) ? customer.getCellphone() : customerRequestDtoPatch.getCellphone());
+    private void updateCustomer(Customer customer, CustomerRequestDtoPatch customerRequest) {
+        customer.setName((customerRequest.getName()==null) ? customer.getName() : customerRequest.getName());
+        customer.setEmail((customerRequest.getEmail()==null) ? customer.getEmail() : customerRequest.getEmail());
+        customer.setCellphone((customerRequest.getCellphone()==null) ? customer.getCellphone() : customerRequest.getCellphone());
     }
 
 
