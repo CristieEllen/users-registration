@@ -23,35 +23,31 @@ public class CustomerController {
     private CustomerService service;
 
     @GetMapping
-    public Page<CustomerResponseDto> findAllCustomer(Pageable pageable){
+    public Page<CustomerResponseDto> findAllCustomer(final Pageable pageable){
         Page<Customer> resultCustomer = service.findAllCustomer(pageable);
         return resultCustomer.map(CustomerResponseDto::new);
     }
 
     @GetMapping(value = "/{idCustomer}")
-    public CustomerResponseDto findByIdCustomer(@PathVariable Long idCustomer){
+    public CustomerResponseDto findByIdCustomer(@PathVariable final Long idCustomer){
         return new CustomerResponseDto(service.findBy(idCustomer));
     }
 
     @PostMapping
-    public ResponseEntity<CustomerResponseDto> createCustomer(@RequestBody @Valid CustomerRequestDto customerRequest, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<CustomerResponseDto> createCustomer(@RequestBody @Valid final CustomerRequestDto customerRequest, final UriComponentsBuilder uriBuilder){
         Customer customer = service.createCustomer(customerRequest);
         URI uri = uriBuilder.path("/{id}").buildAndExpand(customer.getId()).toUri();
         return ResponseEntity.created(uri).body(new CustomerResponseDto(customer));
     }
 
     @DeleteMapping("/{idCustomer}")
-    public void removeCustomer(@PathVariable Long idCustomer) {
+    public void removeCustomer(@PathVariable final Long idCustomer) {
         service.removeCustomer(idCustomer);
     }
 
-   /* @DeleteMapping("/{idCustomer}/{idAddress}")
-    public void removeAddress(@PathVariable(name = "idCustomer") Long idCustomer, @PathVariable(name = "idAddress") Long idAddress) {
-        service.removeAddress(idCustomer, idAddress);
-    }*/
 
     @PatchMapping("/{idCustomer}")
-    ResponseEntity<CustomerResponseDto> updateCustomer(@PathVariable Long idCustomer, @RequestBody @Valid CustomerRequestDtoPatch customerRequest){
+    ResponseEntity<CustomerResponseDto> updateCustomer(@PathVariable final Long idCustomer, @RequestBody @Valid final CustomerRequestDtoPatch customerRequest){
         Customer customer = service.updateCustomer(idCustomer, customerRequest);
         return ResponseEntity.ok().body(new CustomerResponseDto(customer));
     }
