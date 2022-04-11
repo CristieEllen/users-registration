@@ -8,13 +8,13 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 
-public class AddressRequestDtoPost {
+public class AddressRequestDto {
 
     @NotNull
     @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 5,max = 80, message = "Mín 5, Max: 80 caracteres.")
     private String name;
 
-    @NotNull @Range(min = 1, max = 2000)
+    @NotNull @Range(min = 1, max = 2000) @NotEmpty
     private String number;
 
     @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 5,max = 50, message = "Mín 5, Max: 50 caracteres.")
@@ -31,8 +31,6 @@ public class AddressRequestDtoPost {
 
     @NotNull(message = "Preenchimento obrigatório!")
     private Boolean principalAddress;
-
-    private CustomerRequestDtoPost customerRequestDtoPost;
 
 
     public String getName() {
