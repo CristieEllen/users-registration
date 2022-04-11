@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerRequestDtoPost {
+public class CustomerRequestDto {
 
     @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 10, max = 100, message = "Min: 10, Max: 100")
     private String name;
@@ -31,7 +31,7 @@ public class CustomerRequestDtoPost {
     private CustomerTypes customerType;
 
     @Valid @NotNull @Size(min=1, max=5, message = "Adicione pelo menos 1 e no máximo 5 endereços.")
-    private final List<AddressRequestDtoPost> addresses = new ArrayList<>();
+    private final List<AddressRequestDto> addresses = new ArrayList<>();
 
 
     public String getName() {
@@ -54,7 +54,7 @@ public class CustomerRequestDtoPost {
         return customerType;
     }
 
-    public List<AddressRequestDtoPost> getAddresses() {
+    public List<AddressRequestDto> getAddresses() {
         return addresses;
     }
 
@@ -68,7 +68,7 @@ public class CustomerRequestDtoPost {
     public List<Address> converterAddress(Customer customer) {
         List<Address> addressList = new ArrayList<>();
 
-        for(AddressRequestDtoPost addForm: addresses) {
+        for(AddressRequestDto addForm: addresses) {
             Address address = addForm.converterAddress();
             address.setCustomer(customer);
             addressList.add(address);

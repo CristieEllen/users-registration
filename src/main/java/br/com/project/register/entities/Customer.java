@@ -1,8 +1,12 @@
 package br.com.project.register.entities;
 
+import br.com.project.register.annotations.Document;
 import br.com.project.register.enums.CustomerTypes;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,16 +17,27 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 10, max = 100, message = "Min: 10, Max: 100")
     private String name;
+
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!")
+    @Pattern(regexp = "^(((\\d{3}).(\\d{3}).(\\d{3})-(\\d{2}))?((\\d{2}).(\\d{3}).(\\d{3})/(\\d{4})-(\\d{2}))?)*$", message = "CPF: 000.000.000-00 / CNPJ: 00.000.000/0000-00")
+    @Document
     private String documentNumber;
+
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Email(message = "Email inválido!")
     private String email;
+
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 11, max= 11, message = "Digite apenas o número do DDD e do telefone sem pontuação.")
     private String cellphone;
 
     @Enumerated(EnumType.STRING)
-
+    @NotNull(message = "Preenchimento obrigatório, o campo não pode ser nulo!")
     private CustomerTypes customerType;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer") @NotNull
     private List<Address> addresses = new ArrayList<>();
 
     public Customer() {
@@ -84,10 +99,6 @@ public class Customer {
     public List<Address> getAddresses() {
         return addresses;
     }
-
-    /*public void addAddress(Address address){
-        addresses.add(address);
-    }*/
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;

@@ -1,13 +1,12 @@
 package br.com.project.register.services;
 
-import br.com.project.register.dto.request.UpdateAddressDto;
-import br.com.project.register.dto.response.AddressDto;
-import org.springframework.http.ResponseEntity;
+import br.com.project.register.entities.Address;
 
 public interface AddressService {
 
-    ResponseEntity removeAddress(Long id);
+    Address findBy(final Long idAddress);
 
-    ResponseEntity<AddressDto> updateAddress(Long id, UpdateAddressDto updateAddressForm);
+    void removeAddress(Long idAddress);
 
 }
+

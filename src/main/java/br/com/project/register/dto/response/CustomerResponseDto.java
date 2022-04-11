@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CustomerDto {
+public class CustomerResponseDto {
 
     private Long id;
     private String name;
@@ -16,9 +16,9 @@ public class CustomerDto {
     private String cellphone;
     private CustomerTypes type;
 
-    private List<AddressDto> addresses;
+    private List<AddressResponseDto> addresses;
 
-    public CustomerDto(Customer costumer) {
+    public CustomerResponseDto(Customer costumer) {
 
         this.id = costumer.getId();
         this.name = costumer.getName();
@@ -27,7 +27,7 @@ public class CustomerDto {
         this.cellphone = costumer.getCellphone();
         this.type = costumer.getCustomerType();
         this.addresses = new ArrayList<>();
-        this.addresses.addAll(costumer.getAddresses().stream().map(AddressDto::new).collect(Collectors.toList()));
+        this.addresses.addAll(costumer.getAddresses().stream().map(AddressResponseDto::new).collect(Collectors.toList()));
     }
 
     public Long getId() {
@@ -52,7 +52,7 @@ public class CustomerDto {
         return type;
     }
 
-    public List<AddressDto> getAddresses() {
+    public List<AddressResponseDto> getAddresses() {
         return addresses;
     }
 

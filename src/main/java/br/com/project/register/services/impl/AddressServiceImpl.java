@@ -1,17 +1,13 @@
 package br.com.project.register.services.impl;
 
-import br.com.project.register.dto.request.UpdateAddressDto;
-import br.com.project.register.dto.response.AddressDto;
 import br.com.project.register.entities.Address;
 import br.com.project.register.exceptions.CompiledException;
 import br.com.project.register.repositories.AddressRepository;
 import br.com.project.register.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @Service
 public class AddressServiceImpl implements AddressService {
@@ -19,22 +15,18 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     private AddressRepository addressRepository;
 
-    public ResponseEntity removeAddress(Long id){
-        try{
-            addressRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } catch(EmptyResultDataAccessException e){
-            throw new CompiledException("Object not deleted because not found. Id: " + id);
-        }
+    @Override
+    public Address findBy(final Long idAddress){
+        final Optional<Address> resultAddress = addressRepository.findById(idAddress);
+        return resultAddress.orElseThrow(() -> new CompiledException("Element of id " + idAddress + " does not exist"));
     }
 
-    public ResponseEntity<AddressDto> updateAddress(Long id, UpdateAddressDto updateAddressForm){
-        try{
-            Address address = updateAddressForm.update(id, addressRepository);
-            return ResponseEntity.ok(new AddressDto(address));
-        } catch(EntityNotFoundException e){
-            throw new CompiledException("Object not updated. Non-existent customer id. Id: " + id);
-        }
+    @Override
+    public void removeAddress(Long idAddress){
+        findBy(idAddress);
+        addressRepository.deleteById(idAddress);
 
     }
+
+
 }

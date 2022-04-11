@@ -1,7 +1,7 @@
 package br.com.project.register.services;
 
 import br.com.project.register.dto.request.CustomerRequestDtoPatch;
-import br.com.project.register.dto.request.CustomerRequestDtoPost;
+import br.com.project.register.dto.request.CustomerRequestDto;
 import br.com.project.register.entities.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,11 +12,9 @@ public interface CustomerService {
 
     Customer findBy(Long idCustomer);
 
-    Customer createCustomer(CustomerRequestDtoPost customerForm);
+    Customer createCustomer(CustomerRequestDto customerRequest);
 
-    void removeCustomer(Long id);
+    void removeCustomer(Long idCustomer);
 
-    void removeAddress(Long idCustomer, Long idAddress);
-
-    Customer updateCustomer(Long id, CustomerRequestDtoPatch customerRequestDtoPatch);
+    Customer updateCustomer(Long id, CustomerRequestDtoPatch customerRequest);
 }

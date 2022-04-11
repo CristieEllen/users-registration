@@ -1,6 +1,11 @@
 package br.com.project.register.entities;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tb_addresses")
@@ -9,17 +14,31 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 5,max = 80, message = "Mín 5, Max: 80 caracteres.")
     private String name;
+
+    @NotNull @Range(min = 1, max = 2000) @NotEmpty
     private String number;
+
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 5,max = 50, message = "Mín 5, Max: 50 caracteres.")
     private String district;
+
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 5,max = 50, message = "Mín 5, Max: 50 caracteres.")
     private String city;
+
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 8,max = 8, message = "Digite o cep sem a pontuação.")
     private String cep;
+
+    @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 5,max = 50, message = "Digite o nome da cidade por extenso.")
     private String state;
 
+    @NotNull(message = "Preenchimento obrigatório!")
     private Boolean principalAddress;
 
     @ManyToOne
-    @JoinColumn(name = "costumer_id")
+    @JoinColumn(name = "costumer_id") @NotNull
     private Customer customer;
 
     public Address(){
@@ -99,11 +118,6 @@ public class Address {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    @PreRemove
-    public void removeCustomer(){
-        customer.removeAddress(id);
     }
 
     @Override

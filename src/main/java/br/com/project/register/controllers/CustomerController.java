@@ -1,8 +1,8 @@
 package br.com.project.register.controllers;
 
 import br.com.project.register.dto.request.CustomerRequestDtoPatch;
-import br.com.project.register.dto.request.CustomerRequestDtoPost;
-import br.com.project.register.dto.response.CustomerDto;
+import br.com.project.register.dto.request.CustomerRequestDto;
+import br.com.project.register.dto.response.CustomerResponseDto;
 import br.com.project.register.entities.Customer;
 import br.com.project.register.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,36 +23,36 @@ public class CustomerController {
     private CustomerService service;
 
     @GetMapping
-    public Page<CustomerDto> findAllCustomer(Pageable pageable){
+    public Page<CustomerResponseDto> findAllCustomer(Pageable pageable){
         Page<Customer> resultCustomer = service.findAllCustomer(pageable);
-        return resultCustomer.map(CustomerDto::new);
+        return resultCustomer.map(CustomerResponseDto::new);
     }
 
-    @GetMapping(value = "/{id}")
-    public CustomerDto findByIdCustomer(@PathVariable Long id){
-        return new CustomerDto(service.findBy(id));
+    @GetMapping(value = "/{idCustomer}")
+    public CustomerResponseDto findByIdCustomer(@PathVariable Long idCustomer){
+        return new CustomerResponseDto(service.findBy(idCustomer));
     }
 
     @PostMapping
-    public ResponseEntity<CustomerDto> createCustomer(@RequestBody @Valid CustomerRequestDtoPost customerForm, UriComponentsBuilder uriBuilder){
-        Customer customer = service.createCustomer(customerForm);
+    public ResponseEntity<CustomerResponseDto> createCustomer(@RequestBody @Valid CustomerRequestDto customerRequest, UriComponentsBuilder uriBuilder){
+        Customer customer = service.createCustomer(customerRequest);
         URI uri = uriBuilder.path("/{id}").buildAndExpand(customer.getId()).toUri();
-        return ResponseEntity.created(uri).body(new CustomerDto(customer));
+        return ResponseEntity.created(uri).body(new CustomerResponseDto(customer));
     }
 
-    @DeleteMapping("/{id}")
-    public void removeCustomer(@PathVariable Long id) {
-        service.removeCustomer(id);
+    @DeleteMapping("/{idCustomer}")
+    public void removeCustomer(@PathVariable Long idCustomer) {
+        service.removeCustomer(idCustomer);
     }
 
-    @DeleteMapping("/{idCustomer}/{idAddress}")
+   /* @DeleteMapping("/{idCustomer}/{idAddress}")
     public void removeAddress(@PathVariable(name = "idCustomer") Long idCustomer, @PathVariable(name = "idAddress") Long idAddress) {
         service.removeAddress(idCustomer, idAddress);
-    }
+    }*/
 
-    @PatchMapping("/{id}")
-    ResponseEntity<CustomerDto> saveCustomer(@PathVariable Long id, @RequestBody @Valid CustomerRequestDtoPatch customerRequestDtoPatch){
-        Customer customer = service.updateCustomer(id, customerRequestDtoPatch);
-        return ResponseEntity.ok().body(new CustomerDto(customer));
+    @PatchMapping("/{idCustomer}")
+    ResponseEntity<CustomerResponseDto> updateCustomer(@PathVariable Long idCustomer, @RequestBody @Valid CustomerRequestDtoPatch customerRequest){
+        Customer customer = service.updateCustomer(idCustomer, customerRequest);
+        return ResponseEntity.ok().body(new CustomerResponseDto(customer));
     }
 }
