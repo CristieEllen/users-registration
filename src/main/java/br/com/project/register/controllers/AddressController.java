@@ -22,14 +22,14 @@ public class AddressController {
         return new AddressResponseDto(service.findBy(idAddress));
     }
 
-    @DeleteMapping("/{idAddress}")
-    public void removeAddress(@PathVariable final Long idAddress){
-        service.removeAddress(idAddress);
+    @DeleteMapping("/{idCustomer}/{idAddress}")
+    public void removeAddress(@PathVariable final Long idCustomer, @PathVariable final Long idAddress){
+        service.removeAddress(idCustomer, idAddress);
     }
 
-    @PatchMapping("/{idAddress}")
-    public ResponseEntity<AddressResponseDto> updateAddress(@PathVariable final Long idAddress, @RequestBody @Valid final AddressRequestDtoPatch addressRequest){
-        Address Address = service.updateAddress(idAddress, addressRequest);
+    @PatchMapping("/{idCustomer}/{idAddress}")
+    public ResponseEntity<AddressResponseDto> updateAddress(@PathVariable final Long idCustomer, @PathVariable final Long idAddress, @RequestBody @Valid final AddressRequestDtoPatch addressRequest){
+        Address Address = service.updateAddress(idCustomer, idAddress, addressRequest);
         return ResponseEntity.ok().body(new AddressResponseDto(Address));
     }
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,7 +26,8 @@ public class AddressServiceImpl implements AddressService {
 
     @Transactional
     @Override
-    public void removeAddress(Long idAddress){
+    public void removeAddress(final Long idCustomer, Long idAddress){
+        validationAddressInCustomer(idCustomer, idAddress);
         findBy(idAddress);
         addressRepository.deleteById(idAddress);
 
@@ -33,18 +35,25 @@ public class AddressServiceImpl implements AddressService {
 
     @Transactional
     @Override
-    public Address updateAddress(final Long idAddress, final AddressRequestDtoPatch addressRequest){
-
-        final Address address = findBy(idAddress);
-        updateAddress(address, addressRequest);
-        return addressRepository.save(address);
+    public Address updateAddress(final Long idCustomer, final Long idAddress, final AddressRequestDtoPatch addressRequest){
+        validationAddressInCustomer(idCustomer, idAddress);
+        final Address newAddress = findBy(idAddress);
+        updateAddress(newAddress, addressRequest);
+        return addressRepository.save(newAddress);
     }
 
-    private void updateAddress(final Address address, final AddressRequestDtoPatch addressRequest) {
-        address.setName((addressRequest.getName()==null) ? address.getName() : addressRequest.getName());
-        address.setNumber((addressRequest.getNumber()==null) ? address.getNumber() : addressRequest.getNumber());
-        address.setCep((addressRequest.getCep()==null) ? address.getCep() : addressRequest.getCep());
-        address.setDistrict((addressRequest.getDistrict()==null) ? address.getDistrict() : addressRequest.getDistrict());
+    private void updateAddress(final Address newAddress, final AddressRequestDtoPatch addressRequest) {
+        newAddress.setName((addressRequest.getName()==null) ? newAddress.getName() : addressRequest.getName());
+        newAddress.setNumber((addressRequest.getNumber()==null) ? newAddress.getNumber() : addressRequest.getNumber());
+        newAddress.setCep((addressRequest.getCep()==null) ? newAddress.getCep() : addressRequest.getCep());
+        newAddress.setDistrict((addressRequest.getDistrict()==null) ? newAddress.getDistrict() : addressRequest.getDistrict());
     }
 
+    private void validationAddressInCustomer(final Long idCustomer, final Long idAddress){
+        Address address = findBy(idAddress);
+        if(!(Objects.equals(idCustomer, address.getCustomer().getId()))){
+            throw new CompiledException("This address does not belong to id " + idCustomer + ".") ;
+        }
+
+    }
 }

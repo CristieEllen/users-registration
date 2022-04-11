@@ -7,8 +7,8 @@ public interface AddressService {
 
     Address findBy(final Long idAddress);
 
-    void removeAddress(Long idAddress);
+    void removeAddress(final Long idCustomer, final Long idAddress);
 
-    public Address updateAddress(final Long idAddress, final AddressRequestDtoPatch addressRequest);
+    Address updateAddress(final Long idCustomer, final Long idAddress, final AddressRequestDtoPatch addressRequest);
 }
 
