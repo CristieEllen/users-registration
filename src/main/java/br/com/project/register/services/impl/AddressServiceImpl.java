@@ -28,6 +28,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public void removeAddress(final Long idCustomer, Long idAddress){
         validationAddressInCustomer(idCustomer, idAddress);
+        notDeletePrincipalAddress(idAddress);
         findBy(idAddress);
         addressRepository.deleteById(idAddress);
 
@@ -55,5 +56,12 @@ public class AddressServiceImpl implements AddressService {
             throw new CompiledException("This address does not belong to id " + idCustomer + ".") ;
         }
 
+    }
+
+    private void notDeletePrincipalAddress(final Long idAddress){
+        final Address newAddress = findBy(idAddress);
+        if(newAddress.getPrincipalAddress()){
+            throw new CompiledException("Can not delete main address");
+        }
     }
 }
