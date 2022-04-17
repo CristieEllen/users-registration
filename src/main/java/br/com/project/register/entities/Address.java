@@ -112,6 +112,10 @@ public class Address {
         return principalAddress;
     }
 
+    public void setPrincipalAddress(Boolean principalAddress) {
+        this.principalAddress = principalAddress;
+    }
+
     public Customer getCustomer() {
         return customer;
     }
@@ -120,6 +124,10 @@ public class Address {
         this.customer = customer;
     }
 
+    public void setAllPrincipalAddress(){
+        customer.setFalseAllAddresss();
+
+    }
     @Override
     public String toString() {
         return "Address{" +

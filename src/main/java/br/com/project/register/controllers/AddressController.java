@@ -1,6 +1,7 @@
 package br.com.project.register.controllers;
 
 import br.com.project.register.dto.request.AddressRequestDtoPatch;
+import br.com.project.register.dto.request.AddressRequestDtoPut;
 import br.com.project.register.dto.response.AddressResponseDto;
 import br.com.project.register.entities.Address;
 import br.com.project.register.services.AddressService;
@@ -29,8 +30,13 @@ public class AddressController {
 
     @PatchMapping("/{idCustomer}/{idAddress}")
     public ResponseEntity<AddressResponseDto> updateAddress(@PathVariable final Long idCustomer, @PathVariable final Long idAddress, @RequestBody @Valid final AddressRequestDtoPatch addressRequest){
-        Address Address = service.updateAddress(idCustomer, idAddress, addressRequest);
-        return ResponseEntity.ok().body(new AddressResponseDto(Address));
+        Address address = service.updateAddress(idCustomer, idAddress, addressRequest);
+        return ResponseEntity.ok().body(new AddressResponseDto(address));
     }
 
+    @PutMapping("/{idCustomer}/{idAddress}")
+    public ResponseEntity<AddressResponseDto> updatePrincipalAddress(@PathVariable final Long idCustomer, @PathVariable final Long idAddress, @RequestBody @Valid final AddressRequestDtoPut addressRequest){
+        Address address = service.updatePrincipalAddress(idCustomer, idAddress, addressRequest);
+        return ResponseEntity.ok().body(new AddressResponseDto(address));
+    }
 }

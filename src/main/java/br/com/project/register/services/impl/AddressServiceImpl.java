@@ -1,6 +1,7 @@
 package br.com.project.register.services.impl;
 
 import br.com.project.register.dto.request.AddressRequestDtoPatch;
+import br.com.project.register.dto.request.AddressRequestDtoPut;
 import br.com.project.register.entities.Address;
 import br.com.project.register.exceptions.CompiledException;
 import br.com.project.register.repositories.AddressRepository;
@@ -43,12 +44,26 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.save(newAddress);
     }
 
+    @Override
+    public Address updatePrincipalAddress(final Long idCustomer, final Long idAddress, final AddressRequestDtoPut addressRequest){
+        validationAddressInCustomer(idCustomer, idAddress);
+        final Address newAddress = findBy(idAddress);
+        newAddress.setAllPrincipalAddress();
+        updatePrincipalAddress(newAddress, addressRequest);
+        return addressRepository.save(newAddress);
+    }
+
     private void updateAddress(final Address newAddress, final AddressRequestDtoPatch addressRequest) {
         newAddress.setName((addressRequest.getName()==null) ? newAddress.getName() : addressRequest.getName());
         newAddress.setNumber((addressRequest.getNumber()==null) ? newAddress.getNumber() : addressRequest.getNumber());
         newAddress.setCep((addressRequest.getCep()==null) ? newAddress.getCep() : addressRequest.getCep());
         newAddress.setDistrict((addressRequest.getDistrict()==null) ? newAddress.getDistrict() : addressRequest.getDistrict());
     }
+
+    private void updatePrincipalAddress(final Address newAddress, final AddressRequestDtoPut addressRequest) {
+        newAddress.setPrincipalAddress((addressRequest.getPrincipalAddress() == null) ? newAddress.getPrincipalAddress() : addressRequest.getPrincipalAddress());
+    }
+
 
     private void validationAddressInCustomer(final Long idCustomer, final Long idAddress){
         Address address = findBy(idAddress);
