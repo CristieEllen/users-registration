@@ -1,5 +1,6 @@
 package br.com.project.register.services.impl;
 
+import br.com.project.register.dto.request.AddressRequestDto;
 import br.com.project.register.dto.request.AddressRequestDtoPatch;
 import br.com.project.register.dto.request.AddressRequestDtoPut;
 import br.com.project.register.entities.Address;
@@ -19,10 +20,22 @@ public class AddressServiceImpl implements AddressService {
     @Autowired
     private AddressRepository addressRepository;
 
+    @Autowired
+    private CustomerServiceImpl customerService;
+
     @Override
     public Address findBy(final Long idAddress){
         final Optional<Address> resultAddress = addressRepository.findById(idAddress);
         return resultAddress.orElseThrow(() -> new CompiledException("Element of id " + idAddress + " does not exist"));
+    }
+
+    @Transactional
+    @Override
+    public Address createAddress(final Long idCustomer, final AddressRequestDto addressRequest){
+        Address address = addressRequest.converterAddress();
+        customerService.addNewAddress(idCustomer, address);
+
+        return addressRepository.save(address);
     }
 
     @Transactional
@@ -44,6 +57,7 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.save(newAddress);
     }
 
+    @Transactional
     @Override
     public Address updatePrincipalAddress(final Long idCustomer, final Long idAddress, final AddressRequestDtoPut addressRequest){
         validationAddressInCustomer(idCustomer, idAddress);
@@ -79,4 +93,5 @@ public class AddressServiceImpl implements AddressService {
             throw new CompiledException("Can not delete main address");
         }
     }
+
 }

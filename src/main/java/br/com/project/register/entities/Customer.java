@@ -5,8 +5,9 @@ import br.com.project.register.enums.CustomerTypes;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +111,9 @@ public class Customer {
         }
     }
 
+    public void addAddress(Address address){
+        addresses.add(address);
+    }
     @Override
     public String toString() {
         return "Customer{" +

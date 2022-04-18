@@ -3,6 +3,7 @@ package br.com.project.register.services.impl;
 import br.com.project.register.dto.request.AddressRequestDto;
 import br.com.project.register.dto.request.CustomerRequestDto;
 import br.com.project.register.dto.request.CustomerRequestDtoPatch;
+import br.com.project.register.entities.Address;
 import br.com.project.register.entities.Customer;
 import br.com.project.register.exceptions.ChooseMoreThanAllowedException;
 import br.com.project.register.exceptions.CompiledException;
@@ -55,6 +56,14 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.save(customer);
     }
 
+    public void addNewAddress(final Long idCustomer, Address address){
+        Customer customer = findBy(idCustomer);
+        countAddress(customer);
+        customer.addAddress(address);
+        address.setCustomer(customer);
+
+    }
+
     private void validationPrincipalAddress(final CustomerRequestDto customerRequest){
         int sum = 0;
         for (AddressRequestDto principalAddress : customerRequest.getAddresses()){
@@ -75,4 +84,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
+    private void countAddress(final Customer customer){
+        if(customer.getAddresses().size() >= 5){
+            throw new CompiledException("It is not possible to add more address. Maximum:" + customer.getAddresses().size());
+        }
+    }
 }
