@@ -29,9 +29,18 @@ public class AddressRequestDto {
     @NotNull @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 5,max = 50, message = "Digite o nome da cidade por extenso.")
     private String state;
 
-    @NotNull(message = "Preenchimento obrigatório!")
     private Boolean principalAddress;
 
+
+    public AddressRequestDto(String name, String number, String district, String city, String cep, String state, Boolean principalAddress) {
+        this.name = name;
+        this.number = number;
+        this.district = district;
+        this.city = city;
+        this.cep = cep;
+        this.state = state;
+        this.principalAddress = principalAddress;
+    }
 
     public String getName() {
         return name;

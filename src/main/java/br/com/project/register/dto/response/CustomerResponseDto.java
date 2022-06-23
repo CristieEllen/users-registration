@@ -30,6 +30,16 @@ public class CustomerResponseDto {
         this.addresses.addAll(costumer.getAddresses().stream().map(AddressResponseDto::new).collect(Collectors.toList()));
     }
 
+    public CustomerResponseDto(Long id, String name, String email, String documentNumber, String cellphone, CustomerTypes type, List<AddressResponseDto> addresses) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.documentNumber = documentNumber;
+        this.cellphone = cellphone;
+        this.type = type;
+        this.addresses = addresses;
+    }
+
     public Long getId() {
         return id;
     }
