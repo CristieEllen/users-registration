@@ -10,9 +10,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name = "tb_customers")
+@Table(name = "tb_customers", uniqueConstraints={@UniqueConstraint(columnNames={"documentNumber"})})
 public class Customer {
 
     @Id
@@ -50,6 +51,16 @@ public class Customer {
         this.cellphone = cellphone;
         this.customerType = customerType;
 
+    }
+
+    public Customer(Long id, String name, String documentNumber, String email, String cellphone, CustomerTypes customerType, List<Address> addresses) {
+        this.id = id;
+        this.name = name;
+        this.documentNumber = documentNumber;
+        this.email = email;
+        this.cellphone = cellphone;
+        this.customerType = customerType;
+        this.addresses = addresses;
     }
 
     public Long getId() {
@@ -110,12 +121,22 @@ public class Customer {
 
         }
     }
-
     public void addAddress(Address address){
         addresses.add(address);
     }
+
+    public Integer contAddress(){
+        int tot = 0;
+        for (Address address: addresses) {
+            tot += 1;
+        }
+        return tot;
+    }
+
     @Override
     public String toString() {
+
+
         return "Customer{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
@@ -127,4 +148,16 @@ public class Customer {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return name.equals(customer.name) && email.equals(customer.email) && cellphone.equals(customer.cellphone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, email, cellphone);
+    }
 }
