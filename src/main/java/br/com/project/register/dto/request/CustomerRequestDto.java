@@ -31,8 +31,15 @@ public class CustomerRequestDto {
     private CustomerTypes customerType;
 
     @Valid @NotNull @Size(min=1, max=5, message = "Adicione pelo menos 1 e no máximo 5 endereços.")
-    private final List<AddressRequestDto> addresses = new ArrayList<>();
+    private List<AddressRequestDto> addresses = new ArrayList<>();
 
+    public CustomerRequestDto(String name, String documentNumber, String email, String cellphone, CustomerTypes customerType) {
+        this.name = name;
+        this.documentNumber = documentNumber;
+        this.email = email;
+        this.cellphone = cellphone;
+        this.customerType = customerType;
+    }
 
     public String getName() {
         return name;
@@ -52,6 +59,26 @@ public class CustomerRequestDto {
 
     public CustomerTypes getCustomerType() {
         return customerType;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDocumentNumber(String documentNumber) {
+        this.documentNumber = documentNumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCellphone(String cellphone) {
+        this.cellphone = cellphone;
+    }
+
+    public void setCustomerType(CustomerTypes customerType) {
+        this.customerType = customerType;
     }
 
     public List<AddressRequestDto> getAddresses() {

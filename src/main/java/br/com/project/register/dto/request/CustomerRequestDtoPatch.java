@@ -15,6 +15,13 @@ public class CustomerRequestDtoPatch {
     @Length(min = 11, max= 11, message = "Digite apenas o número do DDD e do telefone sem pontuação.")
     private String cellphone;
 
+
+    public CustomerRequestDtoPatch(String name, String email, String cellphone) {
+        this.name = name;
+        this.email = email;
+        this.cellphone = cellphone;
+    }
+
     public String getName() {
         return name;
     }
@@ -25,6 +32,18 @@ public class CustomerRequestDtoPatch {
 
     public String getCellphone() {
         return cellphone;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setCellphone(String cellphone) {
+        this.cellphone = cellphone;
     }
 
     @Override
