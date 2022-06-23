@@ -45,7 +45,6 @@ public class Address {
     }
 
     public Address(String name, String number, String district, String city, String cep, String state, Boolean principalAddress) {
-
         this.name = name;
         this.number = number;
         this.district = district;
@@ -127,6 +126,9 @@ public class Address {
     public void setAllPrincipalAddress(){
         customer.setFalseAllAddresss();
 
+    }
+    public Integer contAddress(){
+        return customer.contAddress();
     }
 
     @Override
