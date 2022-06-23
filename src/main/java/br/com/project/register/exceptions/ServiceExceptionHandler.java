@@ -1,8 +1,9 @@
 package br.com.project.register.exceptions;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,8 +21,8 @@ public class ServiceExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationError> validation(MethodArgumentNotValidException e, HttpServletRequest request){
-        ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Erro de validação!", System.currentTimeMillis());
+    public ResponseEntity<ValidationError> validationErrors(MethodArgumentNotValidException e, HttpServletRequest request){
+        ValidationError err = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Validation error!", System.currentTimeMillis());
         for(FieldError fieldError : e.getBindingResult().getFieldErrors()){
             err.addError(fieldError.getField(), fieldError.getDefaultMessage());
         }
@@ -34,11 +35,17 @@ public class ServiceExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<StandardError> validationCustomerType(HttpMessageNotReadableException e, HttpServletRequest request){
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<StandardError> validationCustomerType(InvalidFormatException e, HttpServletRequest request){
         StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), "Digite PF para Pessoa Física ou PJ para pessoa Juridica", System.currentTimeMillis());
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<StandardError> validationCPF(DataIntegrityViolationException e, HttpServletRequest request){
+        StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), "Document already registered!", System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
 
 }
