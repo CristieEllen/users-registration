@@ -19,10 +19,11 @@ import java.util.Optional;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
-
-    @Autowired
     private CustomerRepository customerRepository;
-
+    @Autowired
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     @Override
     public Page<Customer> findAllCustomer(Pageable pageable) {
@@ -52,7 +53,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer updateCustomer(final Long idCustomer, final CustomerRequestDtoPatch customerRequest){
         final Customer customer = findBy(idCustomer);
-        updateCustomer(customer, customerRequest);
+        updatePartialDataCustomer(customer, customerRequest);
         return customerRepository.save(customer);
     }
 
@@ -77,14 +78,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
 
-    private void updateCustomer(final Customer customer, final CustomerRequestDtoPatch customerRequest) {
+    private void updatePartialDataCustomer(final Customer customer, final CustomerRequestDtoPatch customerRequest) {
         customer.setName((customerRequest.getName()==null) ? customer.getName() : customerRequest.getName());
         customer.setEmail((customerRequest.getEmail()==null) ? customer.getEmail() : customerRequest.getEmail());
         customer.setCellphone((customerRequest.getCellphone()==null) ? customer.getCellphone() : customerRequest.getCellphone());
     }
 
 
-    private void countAddress(final Customer customer){
+    public void countAddress(final Customer customer){
         if(customer.getAddresses().size() >= 5){
             throw new CompiledException("It is not possible to add more address. Maximum:" + customer.getAddresses().size());
         }
