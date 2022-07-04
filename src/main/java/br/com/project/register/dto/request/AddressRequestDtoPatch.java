@@ -18,6 +18,13 @@ public class AddressRequestDtoPatch {
     @Length(min = 8,max = 8, message = "Digite o cep sem a pontuação.")
     private String cep;
 
+    public AddressRequestDtoPatch(String name, String number, String district, String cep) {
+        this.name = name;
+        this.number = number;
+        this.district = district;
+        this.cep = cep;
+    }
+
     public String getName() {
         return name;
     }
@@ -32,6 +39,22 @@ public class AddressRequestDtoPatch {
 
     public String getCep() {
         return cep;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
     @Override

@@ -55,8 +55,23 @@ public class Address {
 
     }
 
+    public Address(Long id, String name, String number, String district, String city, String cep, String state, Boolean principalAddress) {
+        this.id = id;
+        this.name = name;
+        this.number = number;
+        this.district = district;
+        this.city = city;
+        this.cep = cep;
+        this.state = state;
+        this.principalAddress = principalAddress;
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

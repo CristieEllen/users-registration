@@ -1,14 +1,19 @@
 package br.com.project.register.dto.request;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
-
 public class AddressRequestDtoPut {
 
     private Boolean principalAddress;
 
+    public AddressRequestDtoPut(Boolean principalAddress) {
+        this.principalAddress = principalAddress;
+    }
+
     public Boolean getPrincipalAddress() {
         return principalAddress;
+    }
+
+    public void setPrincipalAddress(Boolean principalAddress) {
+        this.principalAddress = principalAddress;
     }
 
     @Override
