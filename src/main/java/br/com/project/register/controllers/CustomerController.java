@@ -1,7 +1,7 @@
 package br.com.project.register.controllers;
 
-import br.com.project.register.dto.request.CustomerRequestDtoPatch;
 import br.com.project.register.dto.request.CustomerRequestDto;
+import br.com.project.register.dto.request.CustomerRequestDtoPatch;
 import br.com.project.register.dto.response.CustomerResponseDto;
 import br.com.project.register.entities.Customer;
 import br.com.project.register.services.CustomerService;
