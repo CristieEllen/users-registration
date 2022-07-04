@@ -17,11 +17,15 @@ import java.util.Optional;
 @Service
 public class AddressServiceImpl implements AddressService {
 
-    @Autowired
     private AddressRepository addressRepository;
 
-    @Autowired
     private CustomerServiceImpl customerService;
+
+    @Autowired
+    public AddressServiceImpl(AddressRepository addressRepository, CustomerServiceImpl customerService) {
+        this.addressRepository = addressRepository;
+        this.customerService = customerService;
+    }
 
     @Override
     public Address findBy(final Long idAddress){
@@ -61,6 +65,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address updatePrincipalAddress(final Long idCustomer, final Long idAddress, final AddressRequestDtoPut addressRequest){
         validationAddressInCustomer(idCustomer, idAddress);
+        validationOneAddress(idAddress);
         final Address newAddress = findBy(idAddress);
         newAddress.setAllPrincipalAddress();
         updatePrincipalAddress(newAddress, addressRequest);
@@ -85,6 +90,13 @@ public class AddressServiceImpl implements AddressService {
             throw new CompiledException("This address does not belong to id " + idCustomer + ".") ;
         }
 
+    }
+
+    private void validationOneAddress(final Long idAddress){
+        Address address = findBy(idAddress);
+        if (address.contAddress() == 1) {
+            throw new CompiledException("This address can not be changed.") ;
+        }
     }
 
     private void notDeletePrincipalAddress(final Long idAddress){
