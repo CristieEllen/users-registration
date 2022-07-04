@@ -4,12 +4,18 @@ import br.com.project.register.entities.Address;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 
 public class AddressRequestDto {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @NotNull
     @NotEmpty(message = "Preenchimento obrigatório!") @Length(min = 5,max = 80, message = "Mín 5, Max: 80 caracteres.")
     private String name;
@@ -31,6 +37,8 @@ public class AddressRequestDto {
 
     private Boolean principalAddress;
 
+    public AddressRequestDto() {
+    }
 
     public AddressRequestDto(String name, String number, String district, String city, String cep, String state, Boolean principalAddress) {
         this.name = name;
@@ -40,6 +48,25 @@ public class AddressRequestDto {
         this.cep = cep;
         this.state = state;
         this.principalAddress = principalAddress;
+    }
+
+    public AddressRequestDto(Long id, String name, String number, String district, String city, String cep, String state, Boolean principalAddress) {
+        this.id = id;
+        this.name = name;
+        this.number = number;
+        this.district = district;
+        this.city = city;
+        this.cep = cep;
+        this.state = state;
+        this.principalAddress = principalAddress;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -70,6 +97,9 @@ public class AddressRequestDto {
         return principalAddress;
     }
 
+    public void setPrincipalAddress(Boolean principalAddress) {
+        this.principalAddress = principalAddress;
+    }
 
     @Override
     public String toString() {
@@ -85,6 +115,6 @@ public class AddressRequestDto {
     }
 
     public Address converterAddress() {
-        return new Address(name, number, district, city, cep, state, principalAddress);
+        return new Address(id, name, number, district, city, cep, state, principalAddress);
     }
 }
