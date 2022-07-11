@@ -63,6 +63,15 @@ public class Customer {
         this.addresses = addresses;
     }
 
+    public Customer(String name, String documentNumber, String email, String cellphone, CustomerTypes customerType, List<Address> addresses) {
+        this.name = name;
+        this.documentNumber = documentNumber;
+        this.email = email;
+        this.cellphone = cellphone;
+        this.customerType = customerType;
+        this.addresses = addresses;
+    }
+
     public Long getId() {
         return id;
     }
