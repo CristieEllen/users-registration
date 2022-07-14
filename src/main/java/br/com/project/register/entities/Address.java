@@ -52,7 +52,6 @@ public class Address {
         this.cep = cep;
         this.state = state;
         this.principalAddress = principalAddress;
-
     }
 
     public Address(Long id, String name, String number, String district, String city, String cep, String state, Boolean principalAddress) {

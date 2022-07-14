@@ -40,16 +40,6 @@ public class AddressRequestDto {
     public AddressRequestDto() {
     }
 
-    public AddressRequestDto(String name, String number, String district, String city, String cep, String state, Boolean principalAddress) {
-        this.name = name;
-        this.number = number;
-        this.district = district;
-        this.city = city;
-        this.cep = cep;
-        this.state = state;
-        this.principalAddress = principalAddress;
-    }
-
     public AddressRequestDto(Long id, String name, String number, String district, String city, String cep, String state, Boolean principalAddress) {
         this.id = id;
         this.name = name;
@@ -95,10 +85,6 @@ public class AddressRequestDto {
 
     public Boolean getPrincipalAddress() {
         return principalAddress;
-    }
-
-    public void setPrincipalAddress(Boolean principalAddress) {
-        this.principalAddress = principalAddress;
     }
 
     @Override
