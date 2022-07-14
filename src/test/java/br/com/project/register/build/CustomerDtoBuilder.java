@@ -98,6 +98,7 @@ public class CustomerDtoBuilder {
 
         Address addressToUpdate = AddressDtoBuild.builder().build().toAddress();
         addressToUpdate.setId(2L);
+        addressToUpdate.setPrincipalAddress(false);
 
         address.add(addressToUpdate);
 
