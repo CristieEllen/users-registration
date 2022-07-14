@@ -1,9 +1,6 @@
-package br.com.project.register.services;
+package br.com.project.register.services.IntegrationTests;
 
-import br.com.project.register.dto.request.CustomerRequestDtoPatch;
-import br.com.project.register.entities.Address;
-import br.com.project.register.entities.Customer;
-import br.com.project.register.enums.CustomerTypes;
+import br.com.project.register.factorys.CustomerFactory;
 import com.google.gson.Gson;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -12,13 +9,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static io.restassured.RestAssured.given;
 
 public class CustomerServiceIntegrationTesting {
-
 
     final static Gson gson = new Gson();
 
@@ -29,35 +22,25 @@ public class CustomerServiceIntegrationTesting {
 
     @Test
     public void postRequest() {
-        Address address = new Address("José da Vila", "25", "São Paulo", "Unidos", "12345678", "São Paulo", true);
-        List<Address> addresses = new ArrayList<>();
-        addresses.add(address);
-        Customer customer = new Customer("José Antônio", "586.425.720-60", "jose@email.com", "12912342345", CustomerTypes.valueOf("PF"), addresses);
-
         Response response = given()
                 .header("Content-Type", "application/json")
                 .and()
-                .body(gson.toJson(customer))
+                .body(gson.toJson(CustomerFactory.defaultCustomer()))
                 .when()
                 .post("/customers")
                 .then()
                 .extract().response();
 
-        System.out.println(response.asString());
         Assertions.assertEquals(201, response.statusCode());
 
     }
 
     @Test
     public void postRequestWithSameCPF() {
-        List<Address> addresses = new ArrayList<>();
-        addresses.add(new Address("José da Vila", "25", "São Paulo", "Unidos", "12345678", "São Paulo", true));
-        Customer customer = new Customer("José Antônio", "586.425.720-60", "jose@email.com", "12912342345", CustomerTypes.valueOf("PF"), addresses);
-
         Response response = given()
                 .header("Content-Type", "application/json")
                 .and()
-                .body(gson.toJson(customer))
+                .body(gson.toJson(CustomerFactory.defaultCustomer()))
                 .when()
                 .post("/customers")
                 .then()
@@ -70,12 +53,10 @@ public class CustomerServiceIntegrationTesting {
 
     @Test
     public void postRequestWithoutAddress() {
-        List<Address> addresses = new ArrayList<>();
-        Customer customer = new Customer("José Antônio", "586.425.720-60", "jose@email.com", "12912342345", CustomerTypes.valueOf("PF"), addresses);
         Response response = given()
                 .header("Content-type", "application/json")
                 .and()
-                .body(gson.toJson(customer))
+                .body(gson.toJson(CustomerFactory.defaultCustomerWithoutAddress()))
                 .when()
                 .post("/customers")
                 .then()
@@ -86,12 +67,10 @@ public class CustomerServiceIntegrationTesting {
     }
     @Test
     public void patchRequest() {
-        CustomerRequestDtoPatch customerDto = new CustomerRequestDtoPatch("José Maria Santos", null, null);
-
         Response response = given()
                 .header("Content-type", "application/json")
                 .and()
-                .body(gson.toJson(customerDto))
+                .body(gson.toJson(CustomerFactory.defaultCustomerPatch()))
                 .when()
                 .patch("/customers/1")
                 .then()
@@ -99,6 +78,21 @@ public class CustomerServiceIntegrationTesting {
 
         Assertions.assertEquals(200, response.statusCode());
         Assertions.assertEquals("José Maria Santos", response.jsonPath().getString("name"));
+
+    }
+
+    @Test
+    public void patchRequestInvalidId() {
+        Response response = given()
+                .header("Content-type", "application/json")
+                .and()
+                .body(gson.toJson(CustomerFactory.defaultCustomerPatch()))
+                .when()
+                .patch("/customers/5")
+                .then()
+                .extract().response();
+
+        Assertions.assertEquals(404, response.statusCode());
 
     }
 
@@ -125,7 +119,7 @@ public class CustomerServiceIntegrationTesting {
                 .extract().response();
 
         Assertions.assertEquals(200, response.statusCode());
-        Assertions.assertEquals("ana@gmail.com", response.jsonPath().getString("email"));
+        Assertions.assertEquals("joao@email.com", response.jsonPath().getString("email"));
     }
 
     @Test
