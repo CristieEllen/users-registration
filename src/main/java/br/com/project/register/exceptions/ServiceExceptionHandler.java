@@ -14,10 +14,16 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ServiceExceptionHandler {
 
-    @ExceptionHandler(CompiledException.class)
-    public ResponseEntity<StandardError> objectNotFound(CompiledException objNC, HttpServletRequest request){
+    @ExceptionHandler(Compiled404Exception.class)
+    public ResponseEntity<StandardError> objectNotFound(Compiled404Exception objNC, HttpServletRequest request){
         StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), objNC.getMessage(), System.currentTimeMillis());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler(Compiled400Exception.class)
+    public ResponseEntity<StandardError> objectNotAllowed(Compiled400Exception objNC, HttpServletRequest request){
+        StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), objNC.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
