@@ -4,7 +4,8 @@ import br.com.project.register.dto.request.AddressRequestDto;
 import br.com.project.register.dto.request.AddressRequestDtoPatch;
 import br.com.project.register.dto.request.AddressRequestDtoPut;
 import br.com.project.register.entities.Address;
-import br.com.project.register.exceptions.CompiledException;
+import br.com.project.register.exceptions.Compiled400Exception;
+import br.com.project.register.exceptions.Compiled404Exception;
 import br.com.project.register.repositories.AddressRepository;
 import br.com.project.register.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address findBy(final Long idAddress){
         final Optional<Address> resultAddress = addressRepository.findById(idAddress);
-        return resultAddress.orElseThrow(() -> new CompiledException("Element of id " + idAddress + " does not exist"));
+        return resultAddress.orElseThrow(() -> new Compiled404Exception("Element of id " + idAddress + " does not exist"));
     }
 
     @Transactional
@@ -87,22 +88,22 @@ public class AddressServiceImpl implements AddressService {
     private void validationAddressInCustomer(final Long idCustomer, final Long idAddress){
         Address address = findBy(idAddress);
         if(!(Objects.equals(idCustomer, address.getCustomer().getId()))){
-            throw new CompiledException("This address does not belong to id " + idCustomer + ".") ;
+            throw new Compiled400Exception("This address does not belong to id " + idCustomer + ".") ;
         }
 
     }
 
     private void validationOneAddress(final Long idAddress){
         Address address = findBy(idAddress);
-        if (address.contAddress() == 1) {
-            throw new CompiledException("This address can not be changed.") ;
+        if (address.contAddress() == 1 || address.getPrincipalAddress()) {
+            throw new Compiled400Exception("This principal address can not be changed.") ;
         }
     }
 
     private void notDeletePrincipalAddress(final Long idAddress){
         final Address newAddress = findBy(idAddress);
         if(newAddress.getPrincipalAddress()){
-            throw new CompiledException("Can not delete main address");
+            throw new Compiled400Exception("Can not delete main address");
         }
     }
 

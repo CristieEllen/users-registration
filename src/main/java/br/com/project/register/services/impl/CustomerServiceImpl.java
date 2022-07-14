@@ -6,7 +6,8 @@ import br.com.project.register.dto.request.CustomerRequestDtoPatch;
 import br.com.project.register.entities.Address;
 import br.com.project.register.entities.Customer;
 import br.com.project.register.exceptions.ChooseMoreThanAllowedException;
-import br.com.project.register.exceptions.CompiledException;
+import br.com.project.register.exceptions.Compiled400Exception;
+import br.com.project.register.exceptions.Compiled404Exception;
 import br.com.project.register.repositories.CustomerRepository;
 import br.com.project.register.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer findBy(final Long idCustomer){
         final Optional<Customer> resultCustomer = customerRepository.findById(idCustomer);
-        return resultCustomer.orElseThrow(() -> new CompiledException("Element of id " + idCustomer + " does not exist"));
+        return resultCustomer.orElseThrow(() -> new Compiled404Exception("Element of id " + idCustomer + " does not exist"));
     }
 
     @Transactional
@@ -73,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
             }
         }
         if(sum != 1){
-            throw new ChooseMoreThanAllowedException("Select only one address as primary. ");
+            throw new ChooseMoreThanAllowedException("Select only one address as primary.");
         }
     }
 
@@ -87,7 +88,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     public void countAddress(final Customer customer){
         if(customer.getAddresses().size() >= 5){
-            throw new CompiledException("It is not possible to add more address. Maximum:" + customer.getAddresses().size());
+            throw new Compiled400Exception("It is not possible to add more address. Maximum:" + customer.getAddresses().size());
         }
     }
 }

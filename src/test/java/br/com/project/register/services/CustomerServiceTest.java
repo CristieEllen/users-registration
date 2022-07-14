@@ -5,7 +5,8 @@ import br.com.project.register.dto.request.CustomerRequestDto;
 import br.com.project.register.dto.request.CustomerRequestDtoPatch;
 import br.com.project.register.entities.Customer;
 import br.com.project.register.exceptions.ChooseMoreThanAllowedException;
-import br.com.project.register.exceptions.CompiledException;
+import br.com.project.register.exceptions.Compiled400Exception;
+import br.com.project.register.exceptions.Compiled404Exception;
 import br.com.project.register.repositories.CustomerRepository;
 import br.com.project.register.services.impl.CustomerServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -69,7 +70,7 @@ public class CustomerServiceTest {
         when(customerRepository.findById(invalidCustomerId))
                 .thenReturn(Optional.ofNullable(Mockito.any(Customer.class)));
 
-        Assertions.assertThrows(CompiledException.class, () -> customerService.findBy(invalidCustomerId));
+        Assertions.assertThrows(Compiled404Exception.class, () -> customerService.findBy(invalidCustomerId));
     }
 
     @Test //testa se está chamando o método de delete
@@ -89,7 +90,7 @@ public class CustomerServiceTest {
         Long invalidCustomerId = 1L;
         when(customerRepository.findById(invalidCustomerId))
                 .thenReturn(Optional.ofNullable(any(Customer.class)));
-        Assertions.assertThrows(CompiledException.class, () -> customerService.removeCustomer(invalidCustomerId));
+        Assertions.assertThrows(Compiled404Exception.class, () -> customerService.removeCustomer(invalidCustomerId));
     }
 
     @Test //testa se está atualizando os dados do usuário
@@ -123,7 +124,7 @@ public class CustomerServiceTest {
         when(customerRepository.findById(invalidCustomerId))
                 .thenReturn(Optional.ofNullable(any(Customer.class)));
 
-        Assertions.assertThrows(CompiledException.class, () -> customerService.updateCustomer(invalidCustomerId, updateCustomerDto));
+        Assertions.assertThrows(Compiled404Exception.class, () -> customerService.updateCustomer(invalidCustomerId, updateCustomerDto));
     }
 
     @Test
@@ -164,7 +165,7 @@ public class CustomerServiceTest {
     @Test
     void testValidationOfNumberOfAddress() {
         Customer customerRequest = CustomerDtoBuilder.builder().build().toCustomerTestNumberOfAddress();
-        Assertions.assertThrows(CompiledException.class, () ->  customerService.countAddress(customerRequest));
+        Assertions.assertThrows(Compiled400Exception.class, () ->  customerService.countAddress(customerRequest));
     }
 
 
