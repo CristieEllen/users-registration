@@ -7,7 +7,8 @@ import br.com.project.register.dto.request.AddressRequestDtoPatch;
 import br.com.project.register.dto.request.AddressRequestDtoPut;
 import br.com.project.register.entities.Address;
 import br.com.project.register.entities.Customer;
-import br.com.project.register.exceptions.CompiledException;
+import br.com.project.register.exceptions.Compiled400Exception;
+import br.com.project.register.exceptions.Compiled404Exception;
 import br.com.project.register.repositories.AddressRepository;
 import br.com.project.register.services.impl.AddressServiceImpl;
 import br.com.project.register.services.impl.CustomerServiceImpl;
@@ -54,7 +55,7 @@ public class AddressServiceTest {
         when(addressRepository.findById(Mockito.anyLong()))
                 .thenReturn(Optional.ofNullable(Mockito.any(Address.class)));
 
-        Assertions.assertThrows(CompiledException.class, () -> addressService.findBy(invalidAddressId));
+        Assertions.assertThrows(Compiled404Exception.class, () -> addressService.findBy(invalidAddressId));
     }
 
     @Test //testa se está atualizando os dados do usuário
@@ -90,7 +91,7 @@ public class AddressServiceTest {
         when(addressRepository.findById(Mockito.anyLong()))
                 .thenReturn(Optional.ofNullable(any(Address.class)));
 
-        Assertions.assertThrows(CompiledException.class, () -> addressService.updateAddress(customer.getId(), invalidAddressId, expectedAddressToUpdate));
+        Assertions.assertThrows(Compiled404Exception.class, () -> addressService.updateAddress(customer.getId(), invalidAddressId, expectedAddressToUpdate));
     }
 
     @Test //testa a tentativa de atualização de um endereço e o endereço não ser da pessoa mencionada gerando erro
@@ -106,7 +107,7 @@ public class AddressServiceTest {
         when(addressRepository.findById(expectedAddressNotToDelete.getId()))
                 .thenReturn(Optional.of(expectedAddressNotToDelete));
 
-        Assertions.assertThrows(CompiledException.class, () -> addressService.updateAddress(invalidCustomerId, expectedAddressNotToDelete.getId(), expectedAddressToUpdate));
+        Assertions.assertThrows(Compiled400Exception.class, () -> addressService.updateAddress(invalidCustomerId, expectedAddressNotToDelete.getId(), expectedAddressToUpdate));
     }
 
     @Test //testa o sucesso ao deletar
@@ -134,7 +135,7 @@ public class AddressServiceTest {
                 .thenReturn(Optional.of(expectedAddressNotToDelete));
 
 
-        Assertions.assertThrows(CompiledException.class, () -> addressService.removeAddress(invalidCustomerId, expectedAddressNotToDelete.getId()));
+        Assertions.assertThrows(Compiled400Exception.class, () -> addressService.removeAddress(invalidCustomerId, expectedAddressNotToDelete.getId()));
     }
 
     @Test // testa se ao tentar deletar o endereço principal irá retornar erro
@@ -145,7 +146,7 @@ public class AddressServiceTest {
         when(addressRepository.findById(expectedAddressToDelete.getId()))
                 .thenReturn(Optional.of(expectedAddressToDelete));
 
-        Assertions.assertThrows(CompiledException.class, () ->addressService.removeAddress(Mockito.anyLong(), expectedAddressToDelete.getId()));
+        Assertions.assertThrows(Compiled400Exception.class, () ->addressService.removeAddress(Mockito.anyLong(), expectedAddressToDelete.getId()));
     }
 
     @Test //testa caso o id do endereço seja invalido e retorna um erro ao tentar deletar
@@ -154,7 +155,7 @@ public class AddressServiceTest {
         Customer customer = CustomerDtoBuilder.builder().build().toCustomer();
         when(addressRepository.findById(Mockito.anyLong()))
                 .thenReturn(Optional.ofNullable(any(Address.class)));
-        Assertions.assertThrows(CompiledException.class, () -> addressService.removeAddress(customer.getId(), invalidAddressId));
+        Assertions.assertThrows(Compiled404Exception.class, () -> addressService.removeAddress(customer.getId(), invalidAddressId));
     }
 
     @Test
@@ -195,22 +196,22 @@ public class AddressServiceTest {
                 .save(addressExpected);
 
 
-        Assertions.assertThrows(CompiledException.class, () -> addressService.updatePrincipalAddress(customerId, addressExpected.getId(), expectedAddressToUpdate));
+        Assertions.assertThrows(Compiled400Exception.class, () -> addressService.updatePrincipalAddress(customerId, addressExpected.getId(), expectedAddressToUpdate));
     }
 
     @Test //testa se está colocando um endereço como principal
     void testGivenValidAddressIdAndUpdateAddressPrincipalThenReturnSuccesOnUpdate() {
 
         Address addressExpected = AddressDtoBuild.builder().build().toAddress();
+        addressExpected.setId(2L);
+        addressExpected.setPrincipalAddress(false);
 
         Customer customerExpected = CustomerDtoBuilder.builder().build().toCustomerTestMainAddress();
-
         addressExpected.setCustomer(customerExpected);
 
         AddressRequestDtoPut expectedAddressToUpdate = AddressDtoBuild.builder().build().toAddressRequestDtoPut();
-        expectedAddressToUpdate.setPrincipalAddress(true);
 
-        when(addressRepository.findById(customerExpected.getAddresses().get(0).getId()))
+        when(addressRepository.findById(customerExpected.getAddresses().get(1).getId()))
                 .thenReturn(Optional.of(addressExpected));
 
         doReturn(addressExpected)
@@ -218,7 +219,6 @@ public class AddressServiceTest {
                 .save(addressExpected);
 
         Address address = addressService.updatePrincipalAddress(customerExpected.getId(), addressExpected.getId(), expectedAddressToUpdate);
-
         Assertions.assertEquals(address.getPrincipalAddress(), true);
 
     }
