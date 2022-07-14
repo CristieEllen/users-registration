@@ -4,6 +4,8 @@ public class AddressRequestDtoPut {
 
     private Boolean principalAddress;
 
+    public AddressRequestDtoPut() {
+    }
     public AddressRequestDtoPut(Boolean principalAddress) {
         this.principalAddress = principalAddress;
     }
