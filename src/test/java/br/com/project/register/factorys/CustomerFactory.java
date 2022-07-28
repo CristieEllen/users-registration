@@ -16,12 +16,12 @@ public class CustomerFactory {
         return new Customer("João Cesaro", "586.425.720-60", "joao@email.com", "12912342345", CustomerTypes.valueOf("PF"), addresses);
     }
 
-    public static Customer defaultCustomerWithoutAddress(){
+    public static Customer customerWithoutAddress(){
         List<Address> addresses = new ArrayList<>();
         return new Customer("João Cesaro", "586.425.720-60", "joao@email.com", "12912342345", CustomerTypes.valueOf("PF"), addresses);
     }
 
-    public static CustomerRequestDtoPatch defaultCustomerPatch(){
+    public static CustomerRequestDtoPatch customerPatch(){
         return new CustomerRequestDtoPatch("José Maria Santos", null, null);
     }
 }
