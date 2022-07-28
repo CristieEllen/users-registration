@@ -1,5 +1,8 @@
 package br.com.project.register.services.IntegrationTests;
 
+import br.com.project.register.entities.Address;
+import br.com.project.register.entities.Customer;
+import br.com.project.register.enums.CustomerTypes;
 import br.com.project.register.factorys.AddressFactory;
 import com.google.gson.Gson;
 import io.restassured.RestAssured;
@@ -8,20 +11,35 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.annotation.Profile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
+@Profile("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AddressServiceIntegrationTest {
 
+    @LocalServerPort
+    int port;
     final static Gson gson = new Gson();
 
     @BeforeAll
-    public static void setup() {
-        RestAssured.baseURI = "http://localhost:8080";
+    void setup(){
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = port;
+
+        defaultAddress();
     }
 
     @Test
-    public void postRequest() {
+    void postRequest() {
         Response response = given()
                 .header("Content-Type", "application/json")
                 .and()
@@ -30,26 +48,13 @@ public class AddressServiceIntegrationTest {
                 .post("/addresses/1")
                 .then()
                 .extract().response();
+
         Assertions.assertEquals(201, response.statusCode());
     }
 
-    @Test
-    public void postRequestLimitAddress() {
-        Response response = given()
-                .header("Content-Type", "application/json")
-                .and()
-                .body(gson.toJson(AddressFactory.defaultAddress()))
-                .when()
-                .post("/addresses/1")
-                .then()
-                .extract().response();
-
-        Assertions.assertEquals(400, response.statusCode());
-        Assertions.assertEquals("It is not possible to add more address. Maximum:5", response.jsonPath().getString("message"));
-    }
 
     @Test
-    public void postRequestInvalidId() {
+    void postRequestInvalidId() {
         Response response = given()
                 .header("Content-Type", "application/json")
                 .and()
@@ -62,7 +67,7 @@ public class AddressServiceIntegrationTest {
     }
 
     @Test
-    public void patchRequest() {
+    void patchRequest() {
         Response response = given()
                 .header("Content-type", "application/json")
                 .and()
@@ -77,7 +82,7 @@ public class AddressServiceIntegrationTest {
     }
 
     @Test
-    public void patchRequestInvalidId() {
+    void patchRequestInvalidId() {
         Response response = given()
                 .header("Content-type", "application/json")
                 .and()
@@ -92,7 +97,7 @@ public class AddressServiceIntegrationTest {
     }
 
     @Test
-    public void patchRequestInvalidIdCustomer() {
+    void patchRequestInvalidIdCustomer() {
         Response response = given()
                 .header("Content-type", "application/json")
                 .and()
@@ -107,7 +112,7 @@ public class AddressServiceIntegrationTest {
     }
 
     @Test
-    public void putRequest() {
+    void putRequest() {
         Response response = given()
                 .header("Content-type", "application/json")
                 .and()
@@ -121,13 +126,13 @@ public class AddressServiceIntegrationTest {
     }
 
     @Test
-    public void putRequestInputFalse() {
+    void putRequestInputFalse() {
         Response response = given()
                 .header("Content-type", "application/json")
                 .and()
                 .body(gson.toJson(AddressFactory.defaultAddressPutFalse()))
                 .when()
-                .put("/addresses/1/2")
+                .put("/addresses/1/1")
                 .then()
                 .extract().response();
 
@@ -136,7 +141,7 @@ public class AddressServiceIntegrationTest {
     }
 
     @Test
-    public void getIdRequest() {
+    void getIdRequest() {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .pathParam("id", "1")
@@ -149,10 +154,10 @@ public class AddressServiceIntegrationTest {
     }
 
     @Test
-    public void getIdInvalidRequest() {
+    void getIdInvalidRequest() {
         Response response = given()
                 .contentType(ContentType.JSON)
-                .pathParam("id", "2")
+                .pathParam("id", "6")
                 .when()
                 .get("/addresses/{id}")
                 .then()
@@ -163,7 +168,8 @@ public class AddressServiceIntegrationTest {
     }
 
     @Test
-    public void notDeleteRequestIfPrincipalAddressEqualTrue() {
+    void notDeleteRequestIfPrincipalAddressEqualTrue() {
+
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
@@ -171,12 +177,13 @@ public class AddressServiceIntegrationTest {
                 .then()
                 .extract().response();
 
+
         Assertions.assertEquals(400, response.statusCode());
         Assertions.assertEquals("Can not delete main address", response.jsonPath().getString("message"));
     }
 
     @Test
-    public void notDeleteRequestIfAddressNotBelongTheCustomer() {
+    void notDeleteRequestIfAddressNotBelongTheCustomer() {
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
@@ -190,7 +197,7 @@ public class AddressServiceIntegrationTest {
     }
 
     @Test
-    public void notdeleteIdInvalidRequest() {
+    void notdeleteIdInvalidRequest() {
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
@@ -202,11 +209,11 @@ public class AddressServiceIntegrationTest {
     }
 
     @Test
-    public void deleteRequest() {
+    void deleteRequest() {
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
-                .delete("/addresses/1/2")
+                .delete("/addresses/1/3")
                 .then()
                 .extract().response();
 
@@ -214,4 +221,21 @@ public class AddressServiceIntegrationTest {
     }
 
 
+    Response defaultAddress() {
+        List<Address> addresses = new ArrayList<>();
+        addresses.add(new Address("José Antônio","223", "Vila Nova", "Bananeira", "12345678","São Paulo" , true));
+        addresses.add(new Address( "Maria da Silva","23", "Vila Nova", "Bananeira", "12345690","São Paulo", false));
+        addresses.add(new Address( "Maria da Silva","23", "Vila Nova", "Bananeira", "12345690","São Paulo", false));
+        Customer customer = new Customer("João Cesaro", "592.640.690-03", "joao@email.com", "12912342345", CustomerTypes.valueOf("PF"), addresses);
+
+        Response response = given()
+                .header("Content-Type", "application/json")
+                .and()
+                .body(gson.toJson(customer))
+                .when()
+                .post("/customers")
+                .then()
+                .extract().response();
+        return response;
+    }
 }
