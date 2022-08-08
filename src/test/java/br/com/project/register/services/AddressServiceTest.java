@@ -16,12 +16,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.context.annotation.Profile;
 
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
-@Profile("test")
+
 public class AddressServiceTest {
 
     private static AddressRepository addressRepository;

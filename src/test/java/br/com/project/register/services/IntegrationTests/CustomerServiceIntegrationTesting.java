@@ -14,14 +14,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.context.annotation.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
-@Profile("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CustomerServiceIntegrationTesting {
@@ -29,10 +27,10 @@ public class CustomerServiceIntegrationTesting {
     @LocalServerPort
     int port;
 
-    final static Gson gson = new Gson();
+    final Gson gson = new Gson();
 
     @BeforeAll
-    void setup() {
+    void setup() throws Exception{
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = port;
 
@@ -40,7 +38,7 @@ public class CustomerServiceIntegrationTesting {
     }
 
     @Test
-    void postRequest() {
+    void postRequest() throws Exception {
         Response response = given()
                 .header("Content-Type", "application/json")
                 .and()
@@ -56,7 +54,7 @@ public class CustomerServiceIntegrationTesting {
 
 
     @Test
-    void postRequestWithoutAddress() {
+    void postRequestWithoutAddress()throws Exception {
         Response response = given()
                 .header("Content-type", "application/json")
                 .and()
@@ -65,12 +63,12 @@ public class CustomerServiceIntegrationTesting {
                 .post("/customers")
                 .then()
                 .extract().response();
-
+        System.out.println(response.jsonPath().prettify());
         Assertions.assertEquals(400, response.statusCode());
 
     }
     @Test
-    void patchRequest() {
+    void patchRequest() throws Exception{
         Response response = given()
                 .header("Content-type", "application/json")
                 .and()
@@ -85,7 +83,7 @@ public class CustomerServiceIntegrationTesting {
     }
 
     @Test
-    void patchRequestInvalidId() {
+    void patchRequestInvalidId()throws Exception {
         Response response = given()
                 .header("Content-type", "application/json")
                 .and()
@@ -100,7 +98,7 @@ public class CustomerServiceIntegrationTesting {
     }
 
     @Test
-    void getRequest() {
+    void getRequest() throws Exception {
         Response response = given()
                 .contentType(ContentType.JSON)
                 .when()
@@ -112,7 +110,7 @@ public class CustomerServiceIntegrationTesting {
     }
 
     @Test
-    void getIdRequest() {
+    void getIdRequest() throws Exception{
 
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -122,13 +120,12 @@ public class CustomerServiceIntegrationTesting {
                 .then()
                 .extract().response();
 
-        System.out.println(response.jsonPath().prettify());
         Assertions.assertEquals(200, response.statusCode());
         Assertions.assertEquals("joao@email.com", response.jsonPath().getString("email"));
     }
 
     @Test
-    void getIdInvalidRequest() {
+    void getIdInvalidRequest() throws Exception{
         Response response = given()
                 .contentType(ContentType.JSON)
                 .pathParam("id", "5")
@@ -143,7 +140,7 @@ public class CustomerServiceIntegrationTesting {
 
 
     @Test
-    void deleteRequest() {
+    void deleteRequest() throws Exception{
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
@@ -155,7 +152,7 @@ public class CustomerServiceIntegrationTesting {
     }
 
     @Test
-    void deleteIdInvalidRequest() {
+    void deleteIdInvalidRequest() throws Exception{
         Response response = given()
                 .header("Content-type", "application/json")
                 .when()
@@ -166,7 +163,7 @@ public class CustomerServiceIntegrationTesting {
         Assertions.assertEquals(404, response.statusCode());
     }
 
-   Response defaultCustomer(){
+   Response defaultCustomer() throws Exception{
         List<Address> addresses = new ArrayList<>();
         addresses.add(new Address("José Antônio","223", "Vila Nova", "Bananeira", "12345678","São Paulo" , true));
         Customer customer = new Customer("João Cesaro", "592.640.690-03", "joao@email.com", "12912342345", CustomerTypes.valueOf("PF"), addresses);
