@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  db:
+    image: mysql
+    container_name: db
+    networks:
+      - production-network
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - MYSQL_USER=users-api
+      - MYSQL_PASSWORD=#2459@skz
+      - MYSQL_DATABASE=prod-db
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    healthcheck:
+      test: [ "CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-proot' ]
+      timeout: 5s
+      retries: 1
+
+  api:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+
+    ports:
+      - "8080:8080"
+    networks:
+      - production-network
+    depends_on:
+      db:
+        condition: service_healthy
+networks:
+  production-network:
+    driver: bridge
